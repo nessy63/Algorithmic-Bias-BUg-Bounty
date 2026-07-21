@@ -1,0 +1,128 @@
+import { Router, Response } from 'express';
+import { z } from 'zod';
+import prisma from '../config/database';
+import { authenticate, authorize } from '../middleware/auth';
+import { validate } from '../middleware/validation';
+import { AuthRequest } from '../types';
+
+const router = Router();
+
+const createModelSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().min(1),
+  version: z.string().min(1),
+  category: z.string().min(1),
+  apiEndpoint: z.string().url().optional(),
+  documentation: z.string().optional(),
+});
+
+const updateModelSchema = z.object({
+  name: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  version: z.string().min(1).optional(),
+  status: z.enum(['ACTIVE', 'PAUSED', 'UNDER_REVIEW']).optional(),
+});
+
+// List all models (public)
+router.get('/', async (req: AuthRequest, res: Response) => {
+  const { page = '1', limit = '20', category, status } = req.query;
+  const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
+
+  const where = {
+    ...(category && { category: category as string }),
+    ...(status && { status: status as string }),
+  };
+
+  const [models, total] = await Promise.all([
+    prisma.aIModel.findMany({
+      where,
+      include: { company: { select: { name: true, slug: true } } },
+      skip,
+      take: parseInt(limit as string),
+      orderBy: { createdAt: 'desc' },
+    }),
+    prisma.aIModel.count({ where }),
+  ]);
+
+  res.json({
+    data: models,
+    total,
+    page: parseInt(page as string),
+    limit: parseInt(limit as string),
+    totalPages: Math.ceil(total / parseInt(limit as string)),
+  });
+});
+
+// Get single model (public)
+router.get('/:id', async (req: AuthRequest, res: Response) => {
+  const model = await prisma.aIModel.findUnique({
+    where: { id: req.params.id },
+    include: {
+      company: { select: { name: true, slug: true, description: true } },
+      bounties: {
+        where: { status: 'OPEN' },
+        orderBy: { amount: 'desc' },
+      },
+      _count: { select: { bugReports: true } },
+    },
+  });
+
+  if (!model) {
+    return res.status(404).json({ error: 'Model not found' });
+  }
+
+  res.json(model);
+});
+
+// Create model (company only)
+router.post('/', authenticate, authorize('COMPANY'), validate(createModelSchema), async (req: AuthRequest, res: Response) => {
+  const model = await prisma.aIModel.create({
+    data: {
+      ...req.body,
+      companyId: req.user!.companyId!,
+    },
+  });
+
+  res.status(201).json(model);
+});
+
+// Update model (company owner only)
+router.put('/:id', authenticate, authorize('COMPANY'), validate(updateModelSchema), async (req: AuthRequest, res: Response) => {
+  const existing = await prisma.aIModel.findFirst({
+    where: {
+      id: req.params.id,
+      companyId: req.user!.companyId!,
+    },
+  });
+
+  if (!existing) {
+    return res.status(404).json({ error: 'Model not found' });
+  }
+
+  const model = await prisma.aIModel.update({
+    where: { id: req.params.id },
+    data: req.body,
+  });
+
+  res.json(model);
+});
+
+// Delete model (company owner only)
+router.delete('/:id', authenticate, authorize('COMPANY'), async (req: AuthRequest, res: Response) => {
+  const existing = await prisma.aIModel.findFirst({
+    where: {
+      id: req.params.id,
+      companyId: req.user!.companyId!,
+    },
+  });
+
+  if (!existing) {
+    return res.status(404).json({ error: 'Model not found' });
+  }
+
+  await prisma.aIModel.delete({ where: { id: req.params.id } });
+
+  res.json({ message: 'Model deleted' });
+});
+
+export default router;

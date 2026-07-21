@@ -1,0 +1,162 @@
+import { Router, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { z } from 'zod';
+import prisma from '../config/database';
+import { JWT_SECRET, JWT_EXPIRES_IN, BCRYPT_ROUNDS } from '../config/auth';
+import { validate } from '../middleware/validation';
+import { authLimiter } from '../middleware/rateLimit';
+import { authenticate } from '../middleware/auth';
+import { AuthRequest } from '../types';
+
+const router = Router();
+
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  name: z.string().min(2),
+  role: z.enum(['COMPANY', 'RESEARCHER']),
+  companyName: z.string().optional(),
+  companyDescription: z.string().optional(),
+});
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
+router.post('/register', authLimiter, validate(registerSchema), async (req: AuthRequest, res: Response) => {
+  try {
+    const { email, password, name, role, companyName, companyDescription } = req.body;
+
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email already registered' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+
+    let companyId: string | undefined;
+    let researcherId: string | undefined;
+
+    if (role === 'COMPANY') {
+      const slug = companyName!.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const company = await prisma.company.create({
+        data: {
+          name: companyName!,
+          slug,
+          description: companyDescription,
+        },
+      });
+      companyId = company.id;
+    } else if (role === 'RESEARCHER') {
+      const researcher = await prisma.researcher.create({
+        data: { bio: '' },
+      });
+      researcherId = researcher.id;
+    }
+
+    const user = await prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        name,
+        role,
+        companyId,
+        researcherId,
+      },
+    });
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        companyId,
+        researcherId,
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    res.status(201).json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+      token,
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Registration failed' });
+  }
+});
+
+router.post('/login', authLimiter, validate(loginSchema), async (req: AuthRequest, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { company: true, researcher: true },
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.passwordHash);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        companyId: user.companyId,
+        researcherId: user.researcherId,
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    res.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+      token,
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: req.user.id },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      company: true,
+      researcher: true,
+    },
+  });
+
+  res.json(user);
+});
+
+export default router;

@@ -1,0 +1,179 @@
+{"env":"development","level":"info","message":"Server running on port 3001","pid":677714,"service":"bugbounty-api","timestamp":"2026-07-21 10:18:56"}
+{"level":"info","message":"GET /health 200 9.867 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 10:18:57"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":682179,"service":"bugbounty-api","timestamp":"2026-07-21 10:19:38"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":684083,"service":"bugbounty-api","timestamp":"2026-07-21 10:19:56"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":832505,"service":"bugbounty-api","timestamp":"2026-07-21 10:44:23"}
+{"level":"info","message":"GET /health 200 6.184 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 10:44:26"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":956654,"service":"bugbounty-api","timestamp":"2026-07-21 11:10:41"}
+{"level":"info","message":"GET /health 200 10.153 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:10:43"}
+{"level":"info","message":"GET /api/models 200 8.557 ms - 852 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:10:43"}
+{"level":"info","message":"POST /api/auth/login 200 462.386 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:10:44"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1039498,"service":"bugbounty-api","timestamp":"2026-07-21 11:23:53"}
+{"level":"info","message":"GET /health 200 10.325 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:23:55"}
+{"level":"info","message":"POST /api/auth/login 200 456.745 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:23:56"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1047188,"service":"bugbounty-api","timestamp":"2026-07-21 11:25:06"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1050770,"service":"bugbounty-api","timestamp":"2026-07-21 11:25:41"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1057493,"service":"bugbounty-api","timestamp":"2026-07-21 11:26:45"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1059920,"service":"bugbounty-api","timestamp":"2026-07-21 11:27:08"}
+{"level":"info","message":"GET /health 200 10.153 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:27:11"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1063782,"service":"bugbounty-api","timestamp":"2026-07-21 11:27:46"}
+{"level":"info","message":"GET /health 200 12.503 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:27:48"}
+{"level":"info","message":"POST /api/auth/login 200 442.800 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:27:49"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1079516,"service":"bugbounty-api","timestamp":"2026-07-21 11:30:13"}
+{"level":"info","message":"GET /health 200 17.216 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:30:22"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1107773,"service":"bugbounty-api","timestamp":"2026-07-21 11:34:42"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1117464,"service":"bugbounty-api","timestamp":"2026-07-21 11:36:12"}
+{"level":"info","message":"GET /health 200 10.165 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:15"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1121085,"service":"bugbounty-api","timestamp":"2026-07-21 11:36:44"}
+{"level":"info","message":"POST /api/auth/register 201 499.714 ms - 410 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:50"}
+{"level":"info","message":"POST /api/auth/register 201 435.958 ms - 431 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:51"}
+{"level":"info","message":"POST /api/auth/register 400 2.501 ms - 36 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:51"}
+{"level":"info","message":"POST /api/auth/register 400 1.941 ms - 56 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:51"}
+{"level":"info","message":"POST /api/auth/register 400 1.580 ms - 89 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:51"}
+{"level":"info","message":"POST /api/auth/login 200 409.214 ms - 436 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:51"}
+{"level":"info","message":"POST /api/auth/login 200 416.945 ms - 448 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:52"}
+{"level":"info","message":"POST /api/auth/login 401 422.133 ms - 31 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:52"}
+{"level":"info","message":"POST /api/auth/login 401 6.881 ms - 31 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:52"}
+{"level":"info","message":"POST /api/auth/login 200 386.406 ms - 436 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:53"}
+{"level":"info","message":"GET /api/auth/me 401 0.537 ms - 29 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:53"}
+{"level":"info","message":"GET /api/auth/me 401 0.436 ms - 29 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:53"}
+{"level":"info","message":"GET /api/auth/me 401 0.295 ms - 29 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:36:53"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1135382,"service":"bugbounty-api","timestamp":"2026-07-21 11:39:00"}
+{"level":"info","message":"POST /api/auth/register 201 498.206 ms - 410 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:06"}
+{"level":"info","message":"POST /api/auth/register 201 447.621 ms - 431 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:07"}
+{"level":"info","message":"POST /api/auth/register 400 1.650 ms - 36 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:07"}
+{"level":"info","message":"POST /api/auth/register 400 1.200 ms - 56 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:07"}
+{"level":"info","message":"POST /api/auth/register 400 0.845 ms - 89 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:07"}
+{"level":"info","message":"POST /api/auth/login 200 428.539 ms - 436 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:07"}
+{"level":"info","message":"POST /api/auth/login 200 419.607 ms - 448 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:08"}
+{"level":"info","message":"POST /api/auth/login 401 408.697 ms - 31 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:08"}
+{"level":"info","message":"POST /api/auth/login 401 3.264 ms - 31 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:08"}
+{"level":"info","message":"POST /api/auth/login 200 410.040 ms - 436 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:09"}
+{"level":"info","message":"GET /api/auth/me 200 4.756 ms - 404 [-] [cmru8ndte0003e1v0cjsjvu9z] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:09"}
+{"level":"info","message":"GET /api/auth/me 401 0.561 ms - 29 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:09"}
+{"level":"info","message":"GET /api/auth/me 401 0.698 ms - 25 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:39:09"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1151916,"service":"bugbounty-api","timestamp":"2026-07-21 11:41:38"}
+{"level":"info","message":"GET /health 200 11.260 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:41:41"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1167019,"service":"bugbounty-api","timestamp":"2026-07-21 11:44:01"}
+{"level":"info","message":"GET /health 200 10.529 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:44:02"}
+{"level":"info","message":"GET /health 200 2.591 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:44:10"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1187733,"service":"bugbounty-api","timestamp":"2026-07-21 11:47:19"}
+{"level":"info","message":"GET /health 200 10.295 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:47:21"}
+{"level":"info","message":"POST /api/auth/login 401 13.682 ms - 31 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:47:21"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1202340,"service":"bugbounty-api","timestamp":"2026-07-21 11:49:38"}
+{"level":"info","message":"GET /health 200 10.974 ms - 103 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:49:41"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":1222821,"service":"bugbounty-api","timestamp":"2026-07-21 11:52:55"}
+{"level":"info","message":"GET /health 200 9.417 ms - 102 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:52:57"}
+{"level":"info","message":"POST /api/auth/login 200 479.325 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:53:16"}
+{"level":"info","message":"OPTIONS /api/auth/login 204 0.492 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:20"}
+{"level":"info","message":"POST /api/auth/login 200 426.127 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:21"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.491 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:21"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.180 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:21"}
+{"level":"info","message":"GET /api/users/stats 200 6.362 ms - 51 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:21"}
+{"level":"info","message":"GET /api/users/stats 304 3.956 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:21"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.306 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:30"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.230 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:30"}
+{"level":"info","message":"GET /api/models?limit=100 200 2.674 ms - 853 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:30"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.977 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:30"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.184 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.164 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.156 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"GET /api/bounties?limit=100 200 3.561 ms - 1603 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.150 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.948 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 2.229 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.015 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:37"}
+{"level":"info","message":"OPTIONS /api/bugs?limit=100 204 0.424 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:40"}
+{"level":"info","message":"OPTIONS /api/bugs?limit=100 204 0.323 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:40"}
+{"level":"info","message":"GET /api/bugs?limit=100 200 6.009 ms - 1304 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:40"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 3.392 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:40"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.253 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.212 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"GET /api/auth/me 200 5.034 ms - 445 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"GET /api/auth/me 304 2.559 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.175 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"GET /api/users/stats 304 1.895 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"GET /api/users/stats 304 1.755 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:54"}
+{"level":"info","message":"OPTIONS /api/bugs?limit=100 204 0.168 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:57"}
+{"level":"info","message":"OPTIONS /api/bugs?limit=100 204 0.134 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:57"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 3.230 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:57"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 3.733 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:55:57"}
+{"level":"info","message":"OPTIONS /api/bugs?limit=100 204 0.159 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.142 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.124 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"GET /api/auth/me 304 1.756 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 6.256 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"GET /api/auth/me 304 2.392 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 2.951 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:23"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.163 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:44"}
+{"level":"info","message":"GET /api/auth/me 304 1.922 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:44"}
+{"level":"info","message":"GET /api/auth/me 304 2.128 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:44"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.155 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:44"}
+{"level":"info","message":"GET /api/users/stats 304 2.293 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:44"}
+{"level":"info","message":"GET /api/users/stats 304 3.330 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:44"}
+{"level":"info","message":"OPTIONS /api/users/profile 204 0.424 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:50"}
+{"level":"info","message":"OPTIONS /api/users/profile 204 0.372 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:50"}
+{"level":"info","message":"GET /api/users/profile 200 3.760 ms - 445 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:50"}
+{"level":"info","message":"GET /api/users/profile 304 2.127 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:56:50"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.309 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.424 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.318 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"GET /api/models?limit=100 304 3.916 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.336 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 3.921 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"GET /api/models?limit=100 304 1.759 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 2.074 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:03"}
+{"level":"info","message":"GET /api/models?limit=100 304 1.656 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:07"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.588 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:07"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.322 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:08"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.282 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:08"}
+{"level":"info","message":"GET /api/users/stats 304 2.707 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:08"}
+{"level":"info","message":"GET /api/users/stats 304 1.811 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:08"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.160 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:14"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.142 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:14"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.079 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:14"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.673 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:14"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.147 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:15"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.133 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:15"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.895 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:15"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 2.440 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:15"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.012 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:15"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 2.037 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:15"}
+{"level":"info","message":"OPTIONS /api/users/profile 204 0.163 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:16"}
+{"level":"info","message":"OPTIONS /api/users/profile 204 0.207 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:16"}
+{"level":"info","message":"GET /api/users/profile 304 1.972 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:16"}
+{"level":"info","message":"GET /api/users/profile 304 2.880 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:16"}
+{"level":"info","message":"OPTIONS /api/users/profile 204 0.159 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:41"}
+{"level":"info","message":"PUT /api/users/profile 400 2.684 ms - 104 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:41"}
+{"level":"info","message":"OPTIONS /api/users/profile 204 0.175 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:51"}
+{"level":"info","message":"PUT /api/users/profile 400 2.594 ms - 104 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:57:51"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.316 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:28"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.332 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:28"}
+{"level":"info","message":"GET /api/users/stats 304 4.585 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:28"}
+{"level":"info","message":"GET /api/users/stats 304 3.085 ms - - [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:28"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.170 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:32"}
+{"level":"info","message":"OPTIONS /api/models?limit=100 204 0.118 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:32"}
+{"level":"info","message":"GET /api/models?limit=100 304 1.965 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:32"}
+{"level":"info","message":"GET /api/models?limit=100 304 2.442 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:32"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.371 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:36"}
+{"level":"info","message":"OPTIONS /api/bounties?limit=100 204 0.309 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:36"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 3.548 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:36"}
+{"level":"info","message":"GET /api/models?limit=100 304 3.469 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:36"}
+{"level":"info","message":"GET /api/bounties?limit=100 304 2.992 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:36"}
+{"level":"info","message":"GET /api/models?limit=100 304 3.056 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:58:36"}
+{"level":"info","message":"GET /health 200 0.969 ms - 105 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 11:59:36"}
+{"level":"info","message":"POST /api/auth/login 200 445.905 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:00:10"}
+{"level":"info","message":"GET /api/bugs 200 3.618 ms - 1303 [-] [cmru8zcdq0005uy1bxo8fcyxp] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:00:10"}
+{"level":"info","message":"OPTIONS /api/auth/login 204 0.148 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:00:59"}
+{"level":"info","message":"POST /api/auth/login 200 426.092 ms - 455 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:00"}
+{"level":"info","message":"OPTIONS /api/users/earnings 204 0.171 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:00"}
+{"level":"info","message":"OPTIONS /api/users/earnings 204 0.164 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:00"}
+{"level":"info","message":"GET /api/users/earnings 200 5.906 ms - 53 [-] [cmru8zce20008uy1b1lhjv2c5] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:00"}
+{"level":"info","message":"GET /api/users/earnings 304 4.187 ms - - [-] [cmru8zce20008uy1b1lhjv2c5] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:00"}
+{"level":"info","message":"OPTIONS /api/bugs?limit=100 204 0.348 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.303 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}
+{"level":"info","message":"OPTIONS /api/auth/me 204 0.305 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 3.904 ms - - [-] [cmru8zce20008uy1b1lhjv2c5] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}
+{"level":"info","message":"GET /api/auth/me 200 3.282 ms - 144 [-] [cmru8zce20008uy1b1lhjv2c5] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}
+{"level":"info","message":"GET /api/bugs?limit=100 304 4.878 ms - - [-] [cmru8zce20008uy1b1lhjv2c5] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}
+{"level":"info","message":"GET /api/auth/me 304 3.814 ms - - [-] [cmru8zce20008uy1b1lhjv2c5] [::1]","service":"bugbounty-api","timestamp":"2026-07-21 12:01:03"}

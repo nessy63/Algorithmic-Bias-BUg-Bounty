@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String      @id @default(cuid())
+  email         String      @unique
+  passwordHash  String      @map("password_hash")
+  name          String
+  role          String      @default("RESEARCHER")
+  company       Company?    @relation(fields: [companyId], references: [id])
+  companyId     String?     @map("company_id")
+  researcher    Researcher?
+  researcherId  String?     @unique @map("researcher_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Company {
+  id            String      @id @default(cuid())
+  name          String
+  slug          String      @unique
+  description   String?
+  website       String?
+  logoUrl       String?     @map("logo_url")
+  stripeAccountId String?   @unique @map("stripe_account_id")
+  verified      Boolean     @default(false)
+  users         User[]
+  models        AIModel[]
+  bounties      Bounty[]
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("companies")
+}
+
+model Researcher {
+  id            String      @id @default(cuid())
+  bio           String?
+  avatarUrl     String?     @map("avatar_url")
+  githubUrl     String?     @map("github_url")
+  reputation    Int         @default(0)
+  totalEarnings Float       @default(0) @map("total_earnings")
+  user          User?       @relation(fields: [userId], references: [id])
+  userId        String?     @unique @map("user_id")
+  bugReports    BugReport[]
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("researchers")
+}
+
+model AIModel {
+  id            String      @id @default(cuid())
+  name          String
+  description   String
+  version       String
+  category      String
+  apiEndpoint   String?     @map("api_endpoint")
+  documentation String?
+  status        String      @default("ACTIVE")
+  company       Company     @relation(fields: [companyId], references: [id])
+  companyId     String      @map("company_id")
+  bounties      Bounty[]
+  bugReports    BugReport[]
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("ai_models")
+}
+
+model Bounty {
+  id            String      @id @default(cuid())
+  title         String
+  description   String
+  amount        Float
+  maxPayout     Float       @map("max_payout")
+  severity      String      @default("MEDIUM")
+  status        String      @default("OPEN")
+  expiresAt     DateTime?   @map("expires_at")
+  company       Company     @relation(fields: [companyId], references: [id])
+  companyId     String      @map("company_id")
+  model         AIModel     @relation(fields: [modelId], references: [id])
+  modelId       String      @map("model_id")
+  bugReports    BugReport[]
+  escrows       Escrow[]
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("bounties")
+}
+
+model BugReport {
+  id            String      @id @default(cuid())
+  title         String
+  description   String
+  reproductionSteps String  @map("reproduction_steps")
+  inputExample  String?     @map("input_example")
+  outputExample String?     @map("output_example")
+  expectedBehavior String  @map("expected_behavior")
+  actualBehavior   String  @map("actual_behavior")
+  severity      String      @default("MEDIUM")
+  status        String      @default("SUBMITTED")
+  researcherNotes String?  @map("researcher_notes")
+  companyNotes  String?     @map("company_notes")
+  researcher    Researcher  @relation(fields: [researcherId], references: [id])
+  researcherId  String      @map("researcher_id")
+  model         AIModel     @relation(fields: [modelId], references: [id])
+  modelId       String      @map("model_id")
+  bounty        Bounty      @relation(fields: [bountyId], references: [id])
+  bountyId      String      @map("bounty_id")
+  escrows       Escrow[]
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("bug_reports")
+}
+
+model Escrow {
+  id            String      @id @default(cuid())
+  amount        Float
+  status        String      @default("PENDING")
+  stripePaymentIntentId String? @unique @map("stripe_payment_intent_id")
+  bugReport     BugReport   @relation(fields: [bugReportId], references: [id])
+  bugReportId   String      @map("bug_report_id")
+  bounty        Bounty      @relation(fields: [bountyId], references: [id])
+  bountyId      String      @map("bounty_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("escrows")
+}

@@ -1,0 +1,156 @@
+# Algorithmic Bias Bug Bounty Platform
+
+A full-stack platform where enterprise companies list their AI models and independent researchers submit bias bug reports for financial bounties.
+
+## Features
+
+- **Dual-sided marketplace**: Companies list AI models, researchers find and report bias
+- **Role-based authentication**: Separate dashboards for companies and researchers
+- **Stripe escrow integration**: Secure payment handling for bounties
+- **Sandboxed AI testing**: Secure environment for testing AI models
+- **Bug tracking workflow**: Full lifecycle from submission to payment
+
+## Tech Stack
+
+- **Frontend**: Next.js 14, React, Tailwind CSS
+- **Backend**: Node.js, Express, Prisma ORM
+- **Database**: PostgreSQL
+- **Payments**: Stripe Connect
+- **Sandbox**: Python FastAPI
+- **Infrastructure**: Docker, Docker Compose
+
+## Prerequisites
+
+- Node.js 18+ and npm
+- PostgreSQL 14+
+- Python 3.11+
+- Docker and Docker Compose (optional)
+
+## Quick Start
+
+### Option 1: Docker Compose (Recommended)
+
+```bash
+# Clone and enter directory
+cd "Algorithmic Bias Bug Bounty platform"
+
+# Copy environment file
+cp .env.example .env
+
+# Start all services
+docker-compose up -d
+
+# Run database migrations
+docker-compose exec backend npx prisma migrate dev
+
+# Seed database
+docker-compose exec backend npx prisma db seed
+```
+
+Visit: http://localhost:3000
+
+### Option 2: Local Development
+
+```bash
+# Install backend dependencies
+cd backend && npm install
+
+# Install frontend dependencies
+cd ../frontend && npm install
+
+# Install sandbox dependencies
+cd ../sandbox && pip install -r requirements.txt
+
+# Start PostgreSQL and create database
+psql -U postgres -c "CREATE DATABASE bugbounty;"
+
+# Run migrations
+cd ../backend && npx prisma migrate dev
+
+# Seed database
+npx prisma db seed
+
+# Start all services (in separate terminals)
+npm run dev          # Backend on port 3001
+cd ../frontend && npm run dev  # Frontend on port 3000
+cd ../sandbox && python main.py  # Sandbox on port 8000
+```
+
+## Demo Accounts
+
+After seeding the database:
+
+| Role | Email | Password |
+|------|-------|----------|
+| Company | admin@techai.example.com | password123 |
+| Company | admin@visionml.example.com | password123 |
+| Researcher | researcher1@example.com | password123 |
+| Researcher | researcher2@example.com | password123 |
+
+## Project Structure
+
+```
+algorithmic-bias-bugbounty/
+├── backend/                 # Node.js/Express API
+│   ├── prisma/             # Database schema & migrations
+│   └── src/
+│       ├── config/         # Configuration files
+│       ├── middleware/     # Auth, validation, rate limiting
+│       ├── routes/         # API endpoints
+│       └── services/       # Business logic (Stripe, AI Proxy)
+├── frontend/               # Next.js application
+│   └── src/
+│       ├── app/            # Pages and routes
+│       ├── components/     # Reusable UI components
+│       ├── hooks/          # React hooks
+│       └── lib/            # Utilities and API client
+├── sandbox/                # Python FastAPI sandbox
+├── docker-compose.yml
+└── .env.example
+```
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login
+- `GET /api/auth/me` - Get current user
+
+### Models
+- `GET /api/models` - List all models
+- `GET /api/models/:id` - Get model details
+- `POST /api/models` - Create model (company only)
+- `PUT /api/models/:id` - Update model
+- `DELETE /api/models/:id` - Delete model
+
+### Bounties
+- `GET /api/bounties` - List all bounties
+- `GET /api/bounties/:id` - Get bounty details
+- `POST /api/bounties` - Create bounty (company only)
+- `PUT /api/bounties/:id` - Update bounty
+
+### Bug Reports
+- `GET /api/bugs` - List bug reports
+- `GET /api/bugs/:id` - Get bug report details
+- `POST /api/bugs` - Submit bug report (researcher only)
+- `PUT /api/bugs/:id` - Update bug status (company only)
+
+### Users
+- `GET /api/users/profile` - Get profile
+- `PUT /api/users/profile` - Update profile
+- `GET /api/users/earnings` - Get earnings (researcher)
+- `GET /api/users/stats` - Get stats (company)
+
+## Environment Variables
+
+See `.env.example` for all required environment variables.
+
+Key variables:
+- `DATABASE_URL` - PostgreSQL connection string
+- `JWT_SECRET` - Secret for JWT tokens
+- `STRIPE_SECRET_KEY` - Stripe API key
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret
+
+## License
+
+MIT
