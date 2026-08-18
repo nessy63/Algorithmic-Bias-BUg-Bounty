@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { logger } from './config/logger';
 import { httpLogger, errorLogger, requestContext } from './middleware/logger';
 import { stripe, STRIPE_WEBHOOK_SECRET } from './config/stripe';
@@ -31,6 +32,9 @@ app.use(httpLogger);
 // Security headers
 app.use(helmet());
 
+// Parse cookies (httpOnly auth token)
+app.use(cookieParser());
+
 // CORS
 app.use(cors({
   origin: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
@@ -45,7 +49,15 @@ app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), async (r
     const event = stripe.webhooks.constructEvent(req.body, sig!, STRIPE_WEBHOOK_SECRET);
 
     if (event.type === 'payment_intent.succeeded') {
-      logger.info('Payment succeeded', { paymentIntent: event.data.object });
+      // Log only non-sensitive identifiers — never the full payment intent
+      // object, which contains customer PII (email, name, billing details).
+      const pi = event.data.object;
+      logger.info('Payment succeeded', {
+        paymentIntentId: pi.id,
+        amount: pi.amount,
+        currency: pi.currency,
+        status: pi.status,
+      });
     }
 
     res.json({ received: true });

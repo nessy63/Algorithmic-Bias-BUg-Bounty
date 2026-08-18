@@ -3,9 +3,10 @@ import { logger, loggerStream } from '../config/logger';
 
 morgan.token('user-id', (req: any) => req.user?.id || 'anonymous');
 morgan.token('request-id', (req: any) => req.headers['x-request-id'] || '-');
-morgan.token('real-ip', (req: any) =>
-  req.headers['x-forwarded-for'] || req.socket.remoteAddress
-);
+// Log the path only — query strings can carry PII (tokens, emails, identifiers).
+morgan.token('url', (req: any) => (req.originalUrl || req.url || '').split('?')[0]);
+// Client IP addresses are personal data — never write them to logs.
+morgan.token('real-ip', () => '[REDACTED]');
 
 export const httpLogger = morgan(
   ':method :url :status :response-time ms - :res[content-length] [:request-id] [:user-id] [:real-ip]',
@@ -17,7 +18,7 @@ export const errorLogger = (err: any, req: any, res: any, next: any) => {
     error: err.message,
     stack: err.stack,
     method: req.method,
-    url: req.url,
+    url: (req.originalUrl || req.url || '').split('?')[0],
     userId: req.user?.id,
     requestId: req.headers['x-request-id'],
   });

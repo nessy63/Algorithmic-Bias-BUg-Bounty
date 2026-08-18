@@ -81,8 +81,11 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
     include: {
       model: true,
       bounty: true,
-      researcher: { include: { user: { select: { name: true, email: true } } } },
-      escrows: true,
+      // Never expose the researcher's email to the company (or anyone else).
+      researcher: { include: { user: { select: { name: true } } } },
+      // Payment-intent IDs are internal Stripe identifiers — surface only
+      // what the client needs.
+      escrows: { select: { id: true, amount: true, status: true, createdAt: true } },
     },
   });
 
@@ -167,7 +170,7 @@ router.put('/:id', authenticate, authorize('COMPANY'), validate(updateBugSchema)
     include: {
       model: true,
       bounty: true,
-      researcher: { include: { user: { select: { name: true, email: true } } } },
+      researcher: { include: { user: { select: { name: true } } } },
     },
   });
 
@@ -177,11 +180,20 @@ router.put('/:id', authenticate, authorize('COMPANY'), validate(updateBugSchema)
 
     try {
       await StripeService.createEscrow(bug.id, escrowAmount);
-      await EmailService.sendBugReportAccepted(
-        bug.researcher.user!.email,
-        bug.title,
-        escrowAmount
-      );
+
+      // Fetch the researcher's email server-side only — it must never appear
+      // in API responses.
+      const researcherUser = await prisma.user.findUnique({
+        where: { researcherId: bug.researcherId },
+        select: { email: true },
+      });
+      if (researcherUser?.email) {
+        await EmailService.sendBugReportAccepted(
+          researcherUser.email,
+          bug.title,
+          escrowAmount
+        );
+      }
     } catch (escrowError) {
       logger.error('Failed to create escrow for accepted bug report', {
         bugId: bug.id,

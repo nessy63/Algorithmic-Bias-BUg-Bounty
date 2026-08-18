@@ -8,9 +8,10 @@ interface EmailOptions {
 
 export class EmailService {
   static async send(options: EmailOptions) {
-    // In production, integrate with SendGrid, AWS SES, or similar
+    // In production, integrate with SendGrid, AWS SES, or similar.
+    // Never log the recipient address — it is personal data.
     logger.info('Email sent', {
-      to: options.to,
+      to: '[REDACTED]',
       subject: options.subject,
     });
   }

@@ -4,17 +4,17 @@ async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   };
 
+  // Auth is handled by an httpOnly cookie set by the backend — the token is
+  // never exposed to JavaScript and nothing is stored in localStorage.
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
+    credentials: 'include',
   });
 
   if (!response.ok) {

@@ -4,13 +4,17 @@ import { JWT_SECRET } from '../config/auth';
 import { AuthRequest, AuthUser } from '../types';
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  // Prefer the httpOnly cookie (set at login/register). The Authorization
+  // header is still accepted for API clients and backward compatibility.
+  const token =
+    (req.cookies?.token as string | undefined) ||
+    (req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.split(' ')[1]
+      : undefined);
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     return res.status(401).json({ error: 'No token provided' });
   }
-
-  const token = authHeader.split(' ')[1];
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as AuthUser;

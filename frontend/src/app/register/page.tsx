@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setToken, setUser } = useAuthStore();
+  const { setUser } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<'COMPANY' | 'RESEARCHER'>(
     (searchParams.get('role') as 'COMPANY' | 'RESEARCHER') || 'RESEARCHER'
@@ -37,11 +37,10 @@ function RegisterForm() {
     setLoading(true);
 
     try {
-      const { user, token } = await api.post<{ user: any; token: string }>('/api/auth/register', {
+      const { user } = await api.post<{ user: any }>('/api/auth/register', {
         ...formData,
         role,
       });
-      setToken(token);
       setUser(user);
       toast.success('Account created successfully!');
       router.push('/dashboard');

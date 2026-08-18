@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useAuthStore } from '@/lib/auth';
 import Card, { CardContent, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import toast from 'react-hot-toast';
-import { User, CreditCard, Shield, Save } from 'lucide-react';
+import { User, CreditCard, Shield, Save, AlertTriangle } from 'lucide-react';
 
 interface Profile {
   id: string;
@@ -19,7 +20,7 @@ interface Profile {
     name: string;
     description?: string;
     website?: string;
-    stripeAccountId?: string;
+    stripeConnected?: boolean;
     verified: boolean;
   };
   researcher?: {
@@ -33,7 +34,8 @@ interface Profile {
 }
 
 export default function SettingsPage() {
-  const { user } = useAuthStore();
+  const router = useRouter();
+  const { user, logout } = useAuthStore();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -50,6 +52,8 @@ export default function SettingsPage() {
     description: '',
     website: '',
   });
+
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     loadProfile();
@@ -90,6 +94,25 @@ export default function SettingsPage() {
       toast.error(error instanceof Error ? error.message : 'Failed to update profile');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmed = window.confirm(
+      'Delete your account? All personal data will be permanently removed or anonymized. This cannot be undone.'
+    );
+    if (!confirmed) return;
+
+    setDeleting(true);
+
+    try {
+      await api.delete('/api/users/account');
+      logout();
+      toast.success('Account deleted');
+      router.push('/');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to delete account');
+      setDeleting(false);
     }
   };
 
@@ -259,7 +282,7 @@ export default function SettingsPage() {
                 Connect your Stripe account to receive payments and fund bounties.
               </p>
 
-              {profile?.company?.stripeAccountId ? (
+              {profile?.company?.stripeConnected ? (
                 <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4">
                   <div className="flex items-center gap-2">
                     <div className="h-2 w-2 bg-emerald-400 rounded-full" />
@@ -280,18 +303,39 @@ export default function SettingsPage() {
               <Button
                 onClick={handleSetupPayments}
                 loading={settingUpPayments}
-                variant={profile?.company?.stripeAccountId ? 'secondary' : 'primary'}
+                variant={profile?.company?.stripeConnected ? 'secondary' : 'primary'}
               >
                 <CreditCard size={16} className="mr-2" />
-                {profile?.company?.stripeAccountId ? 'Update Stripe Account' : 'Connect Stripe'}
+                {profile?.company?.stripeConnected ? 'Update Stripe Account' : 'Connect Stripe'}
               </Button>
             </div>
           </CardContent>
         </Card>
       )}
 
+      {/* Danger Zone */}
+      <Card className="mt-6 border-red-500/30">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-400" />
+            <h2 className="text-lg font-semibold text-red-300">Delete Account</h2>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 mb-4">
+            Permanently delete your account and anonymize all personal data. Bug reports
+            and financial records are kept for the platform's records but are stripped of
+            your identity.
+          </p>
+          <Button variant="danger" onClick={handleDeleteAccount} loading={deleting}>
+            <AlertTriangle size={16} className="mr-2" />
+            Delete My Account
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Account Info */}
-      <Card>
+      <Card className="mt-6">
         <CardHeader>
           <h2 className="text-lg font-semibold">Account Information</h2>
         </CardHeader>

@@ -12,6 +12,39 @@ import { AuthRequest } from '../types';
 
 const router = Router();
 
+// httpOnly session cookie: not readable by JavaScript (XSS-safe), sent only
+// on same-site requests, and only over HTTPS in production.
+const TOKEN_COOKIE = 'token';
+const TOKEN_COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // matches JWT_EXPIRES_IN
+const tokenCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  path: '/',
+  maxAge: TOKEN_COOKIE_MAX_AGE,
+});
+
+// Public profile shape — never include internal fields (passwordHash, ids,
+// stripeAccountId) that the client does not need.
+function publicUser(user: {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  company: any;
+  researcher: any;
+}) {
+  const { stripeAccountId, ...company } = user.company ?? {};
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    company: user.company ? { ...company, stripeConnected: !!stripeAccountId } : null,
+    researcher: user.researcher ?? null,
+  };
+}
+
 const registerSchema = z
   .object({
     email: z.string().email(),
@@ -92,6 +125,8 @@ router.post('/register', authLimiter, validate(registerSchema), async (req: Auth
       { expiresIn: JWT_EXPIRES_IN }
     );
 
+    res.cookie(TOKEN_COOKIE, token, tokenCookieOptions());
+
     res.status(201).json({
       user: {
         id: user.id,
@@ -102,8 +137,8 @@ router.post('/register', authLimiter, validate(registerSchema), async (req: Auth
       token,
     });
   } catch (error) {
+    // Never log the submitted email — it is personal data.
     logger.error('Registration failed', {
-      email: req.body.email,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
@@ -141,6 +176,8 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
       { expiresIn: JWT_EXPIRES_IN }
     );
 
+    res.cookie(TOKEN_COOKIE, token, tokenCookieOptions());
+
     res.json({
       user: {
         id: user.id,
@@ -151,13 +188,19 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
       token,
     });
   } catch (error) {
+    // Never log the submitted email — it is personal data.
     logger.error('Login failed', {
-      email: req.body.email,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
     res.status(500).json({ error: 'Login failed' });
   }
+});
+
+// Sign out: clears the httpOnly session cookie. Safe to call unauthenticated.
+router.post('/logout', (_req: AuthRequest, res: Response) => {
+  res.clearCookie(TOKEN_COOKIE, tokenCookieOptions());
+  res.json({ message: 'Logged out' });
 });
 
 router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
@@ -172,12 +215,27 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
       email: true,
       name: true,
       role: true,
-      company: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          description: true,
+          website: true,
+          logoUrl: true,
+          verified: true,
+          stripeAccountId: true,
+        },
+      },
       researcher: true,
     },
   });
 
-  res.json(user);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  res.json(publicUser(user));
 });
 
 export default router;

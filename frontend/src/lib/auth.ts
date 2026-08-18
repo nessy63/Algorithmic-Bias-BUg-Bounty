@@ -1,11 +1,10 @@
 import { create } from 'zustand';
 import { User, UserRole } from '@/types';
+import { api } from './api';
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   setUser: (user: User | null) => void;
-  setToken: (token: string | null) => void;
   logout: () => void;
   isCompany: () => boolean;
   isResearcher: () => boolean;
@@ -13,21 +12,13 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
-  token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
 
   setUser: (user) => set({ user }),
-  setToken: (token) => {
-    if (token) {
-      localStorage.setItem('token', token);
-    } else {
-      localStorage.removeItem('token');
-    }
-    set({ token });
-  },
 
   logout: () => {
-    localStorage.removeItem('token');
-    set({ user: null, token: null });
+    // Clear the httpOnly session cookie server-side, then drop local state.
+    api.post('/api/auth/logout', {}).catch(() => {});
+    set({ user: null });
   },
 
   isCompany: () => get().user?.role === 'COMPANY',

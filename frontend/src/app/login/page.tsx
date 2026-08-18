@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setToken, setUser } = useAuthStore();
+  const { setUser } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -23,8 +23,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { user, token } = await api.post<{ user: any; token: string }>('/api/auth/login', formData);
-      setToken(token);
+      const { user } = await api.post<{ user: any }>('/api/auth/login', formData);
       setUser(user);
       toast.success('Welcome back!');
       router.push('/dashboard');

@@ -102,9 +102,10 @@ export default function LogsPage() {
             <div>
               <p className="font-medium text-gray-900">Log viewer unavailable</p>
               <p className="text-sm text-gray-600">
-                The log viewer is disabled in production. Set{' '}
+                The log viewer is disabled by default because logs can contain sensitive
+                data. Set{' '}
                 <code className="bg-gray-100 px-1 rounded">ENABLE_LOG_VIEWER=true</code> to
-                enable it, or run the app in development mode.
+                enable it. Served entries are redacted.
               </p>
             </div>
           </CardContent>
