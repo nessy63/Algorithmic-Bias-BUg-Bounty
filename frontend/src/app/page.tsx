@@ -40,7 +40,7 @@ export default function Home() {
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link href="/register">
-                <Button size="lg" className="bg-white text-primary-700 hover:bg-primary-50">
+                <Button size="lg" variant="white">
                   Start Hunting <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -106,7 +106,7 @@ export default function Home() {
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link href="/register?role=COMPANY">
-              <Button size="lg" className="bg-white text-primary-700 hover:bg-primary-50">
+              <Button size="lg" variant="white">
                 List Your AI Model
               </Button>
             </Link>

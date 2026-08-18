@@ -795,3 +795,16 @@
 {"level":"info","message":"OPTIONS /api/models?limit=50 204 0.200 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-17 21:26:17"}
 {"level":"info","message":"GET /api/models?limit=50 304 2.665 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-17 21:26:17"}
 {"level":"info","message":"GET /api/models?limit=50 304 2.161 ms - - [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-17 21:26:17"}
+{"env":"development","level":"info","message":"Server running on port 3001","pid":118099,"service":"bugbounty-api","timestamp":"2026-08-18 07:45:58"}
+{"level":"info","message":"OPTIONS /api/auth/login 204 5.262 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:54:46"}
+{"level":"info","message":"POST /api/auth/login 200 629.522 ms - 447 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:54:46"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.344 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:54:47"}
+{"level":"info","message":"OPTIONS /api/users/stats 204 0.658 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:54:47"}
+{"level":"info","message":"GET /api/users/stats 200 19.109 ms - 51 [-] [cmswzjup20005iaahnll0e2kx] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:54:47"}
+{"level":"info","message":"GET /api/users/stats 304 9.126 ms - - [-] [cmswzjup20005iaahnll0e2kx] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:54:47"}
+{"level":"info","message":"OPTIONS /api/auth/login 204 1.353 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:55:23"}
+{"level":"info","message":"POST /api/auth/login 200 359.848 ms - 455 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:55:23"}
+{"level":"info","message":"OPTIONS /api/users/earnings 204 0.284 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:55:23"}
+{"level":"info","message":"OPTIONS /api/users/earnings 204 0.346 ms - 0 [-] [anonymous] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:55:23"}
+{"level":"info","message":"GET /api/users/earnings 200 3.303 ms - 53 [-] [cmswzjupi0008iaahc21uvo8p] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:55:23"}
+{"level":"info","message":"GET /api/users/earnings 304 5.196 ms - - [-] [cmswzjupi0008iaahc21uvo8p] [::1]","service":"bugbounty-api","timestamp":"2026-08-18 07:55:23"}
