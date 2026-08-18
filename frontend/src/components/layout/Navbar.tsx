@@ -9,12 +9,12 @@ export default function Navbar() {
   const { user, logout } = useAuthStore();
 
   return (
-    <nav className="bg-white border-b border-gray-200">
+    <nav className="bg-navy-900 border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              <Shield className="h-8 w-8 text-primary-600" />
+              <Shield className="h-8 w-8 text-primary-400" />
               <span className="text-xl font-bold text-gray-900">Bias Bounty</span>
             </Link>
           </div>

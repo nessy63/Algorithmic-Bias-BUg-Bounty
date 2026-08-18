@@ -65,7 +65,7 @@ export default function SandboxPage() {
   return (
     <div className="max-w-6xl">
       <div className="flex items-center gap-3 mb-6">
-        <Shield className="h-8 w-8 text-primary-600" />
+        <Shield className="h-8 w-8 text-primary-400" />
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Sandbox Testing</h1>
           <p className="text-gray-500">Test AI models in a secure, isolated environment</p>
@@ -99,7 +99,7 @@ export default function SandboxPage() {
                   ))}
                 </select>
                 {models.length === 0 && !loading && (
-                  <p className="text-sm text-yellow-600 mt-1">
+                  <p className="text-sm text-yellow-400 mt-1">
                     No models with API endpoints found. Companies must add an API endpoint to enable sandbox testing.
                   </p>
                 )}
@@ -118,7 +118,7 @@ export default function SandboxPage() {
                       onClick={() => setTestType(type.value)}
                       className={`p-3 rounded-lg border text-left transition-colors ${
                         testType === type.value
-                          ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-500'
+                          ? 'border-primary-400 bg-primary-500/15 ring-2 ring-primary-400'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
@@ -186,14 +186,14 @@ export default function SandboxPage() {
             <CardContent>
               {!result && !testing && (
                 <div className="text-center py-8 text-gray-500">
-                  <Shield className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                  <Shield className="h-12 w-12 mx-auto mb-3 text-gray-500" />
                   <p>Run a test to see results</p>
                 </div>
               )}
 
               {testing && (
                 <div className="text-center py-8">
-                  <Loader2 className="h-12 w-12 mx-auto mb-3 text-primary-600 animate-spin" />
+                  <Loader2 className="h-12 w-12 mx-auto mb-3 text-primary-400 animate-spin" />
                   <p className="text-gray-600">Testing model in sandbox...</p>
                 </div>
               )}
@@ -202,15 +202,15 @@ export default function SandboxPage() {
                 <div className="space-y-4">
                   {/* Status */}
                   <div className={`flex items-center gap-2 p-3 rounded-lg ${
-                    result.success ? 'bg-green-50' : 'bg-red-50'
+                    result.success ? 'bg-emerald-500/10' : 'bg-red-500/10'
                   }`}>
                     {result.success ? (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <CheckCircle className="h-5 w-5 text-emerald-400" />
                     ) : (
-                      <XCircle className="h-5 w-5 text-red-600" />
+                      <XCircle className="h-5 w-5 text-red-400" />
                     )}
                     <span className={`font-medium ${
-                      result.success ? 'text-green-800' : 'text-red-800'
+                      result.success ? 'text-emerald-300' : 'text-red-300'
                     }`}>
                       {result.success ? 'Test Completed' : 'Test Failed'}
                     </span>
@@ -224,9 +224,9 @@ export default function SandboxPage() {
 
                   {/* Error */}
                   {result.error && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-sm text-red-800 font-medium">Error</p>
-                      <p className="text-sm text-red-600 mt-1">{result.error}</p>
+                    <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                      <p className="text-sm text-red-300 font-medium">Error</p>
+                      <p className="text-sm text-red-300/80 mt-1">{result.error}</p>
                     </div>
                   )}
 
@@ -262,19 +262,19 @@ export default function SandboxPage() {
             <CardContent>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 mt-0.5">✓</span>
+                  <span className="text-emerald-400 mt-0.5">✓</span>
                   All tests run in isolated sandbox
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
+                  <span className="text-emerald-400">✓</span>
                   5 requests per minute limit
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
+                  <span className="text-emerald-400">✓</span>
                   30 second timeout per request
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
+                  <span className="text-emerald-400">✓</span>
                   No data persisted from tests
                 </li>
               </ul>

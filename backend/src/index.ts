@@ -5,11 +5,19 @@ import { logger } from './config/logger';
 import { httpLogger, errorLogger, requestContext } from './middleware/logger';
 import { stripe, STRIPE_WEBHOOK_SECRET } from './config/stripe';
 import { apiLimiter } from './middleware/rateLimit';
+
+// Safety net: an unhandled async rejection must never take down the whole API.
+process.on('unhandledRejection', (reason) => {
+  logger.error('Unhandled promise rejection', {
+    error: reason instanceof Error ? reason.stack || reason.message : reason,
+  });
+});
 import authRoutes from './routes/auth';
 import modelRoutes from './routes/models';
 import bugRoutes from './routes/bugs';
 import bountyRoutes from './routes/bounties';
 import userRoutes from './routes/users';
+import logRoutes from './routes/logs';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -56,6 +64,7 @@ app.use('/api/models', modelRoutes);
 app.use('/api/bugs', bugRoutes);
 app.use('/api/bounties', bountyRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/logs', logRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

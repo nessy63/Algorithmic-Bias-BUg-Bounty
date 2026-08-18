@@ -45,8 +45,8 @@ export default function DashboardPage() {
                     <p className="text-sm text-gray-500">AI Models</p>
                     <p className="text-3xl font-bold text-gray-900">{stats.models || 0}</p>
                   </div>
-                  <div className="p-3 bg-primary-100 rounded-lg">
-                    <Bot className="h-6 w-6 text-primary-600" />
+                  <div className="p-3 bg-primary-500/15 rounded-lg">
+                    <Bot className="h-6 w-6 text-primary-400" />
                   </div>
                 </div>
               </CardContent>
@@ -59,8 +59,8 @@ export default function DashboardPage() {
                     <p className="text-sm text-gray-500">Active Bounties</p>
                     <p className="text-3xl font-bold text-gray-900">{stats.bounties || 0}</p>
                   </div>
-                  <div className="p-3 bg-green-100 rounded-lg">
-                    <DollarSign className="h-6 w-6 text-green-600" />
+                  <div className="p-3 bg-emerald-500/15 rounded-lg">
+                    <DollarSign className="h-6 w-6 text-emerald-400" />
                   </div>
                 </div>
               </CardContent>
@@ -73,8 +73,8 @@ export default function DashboardPage() {
                     <p className="text-sm text-gray-500">Bug Reports</p>
                     <p className="text-3xl font-bold text-gray-900">{stats.bugs || 0}</p>
                   </div>
-                  <div className="p-3 bg-orange-100 rounded-lg">
-                    <Bug className="h-6 w-6 text-orange-600" />
+                  <div className="p-3 bg-orange-500/15 rounded-lg">
+                    <Bug className="h-6 w-6 text-orange-400" />
                   </div>
                 </div>
               </CardContent>
@@ -87,8 +87,8 @@ export default function DashboardPage() {
                     <p className="text-sm text-gray-500">Total Payouts</p>
                     <p className="text-3xl font-bold text-gray-900">${(stats.totalPayouts || 0).toLocaleString()}</p>
                   </div>
-                  <div className="p-3 bg-purple-100 rounded-lg">
-                    <TrendingUp className="h-6 w-6 text-purple-600" />
+                  <div className="p-3 bg-purple-500/15 rounded-lg">
+                    <TrendingUp className="h-6 w-6 text-purple-400" />
                   </div>
                 </div>
               </CardContent>
@@ -103,8 +103,8 @@ export default function DashboardPage() {
                     <p className="text-sm text-gray-500">Total Earnings</p>
                     <p className="text-3xl font-bold text-gray-900">${(stats.totalEarnings || 0).toLocaleString()}</p>
                   </div>
-                  <div className="p-3 bg-green-100 rounded-lg">
-                    <DollarSign className="h-6 w-6 text-green-600" />
+                  <div className="p-3 bg-emerald-500/15 rounded-lg">
+                    <DollarSign className="h-6 w-6 text-emerald-400" />
                   </div>
                 </div>
               </CardContent>
@@ -117,8 +117,8 @@ export default function DashboardPage() {
                     <p className="text-sm text-gray-500">Reputation</p>
                     <p className="text-3xl font-bold text-gray-900">{stats.reputation || 0}</p>
                   </div>
-                  <div className="p-3 bg-primary-100 rounded-lg">
-                    <TrendingUp className="h-6 w-6 text-primary-600" />
+                  <div className="p-3 bg-primary-500/15 rounded-lg">
+                    <TrendingUp className="h-6 w-6 text-primary-400" />
                   </div>
                 </div>
               </CardContent>

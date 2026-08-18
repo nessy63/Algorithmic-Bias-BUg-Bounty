@@ -20,8 +20,8 @@ export default function ModelCard({ model }: ModelCardProps) {
         <CardContent className="h-full flex flex-col">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary-100 rounded-lg">
-                <Bot className="h-6 w-6 text-primary-600" />
+              <div className="p-2 bg-primary-500/15 rounded-lg">
+                <Bot className="h-6 w-6 text-primary-400" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">{model.name}</h3>
@@ -39,7 +39,7 @@ export default function ModelCard({ model }: ModelCardProps) {
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-500">v{model.version}</span>
-            <span className="text-primary-600 flex items-center gap-1">
+            <span className="text-primary-400 flex items-center gap-1">
               View Details <ExternalLink size={14} />
             </span>
           </div>

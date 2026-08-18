@@ -187,7 +187,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">Total Earnings</p>
-                      <p className="text-2xl font-bold text-green-600">
+                      <p className="text-2xl font-bold text-emerald-400">
                         ${(profile?.researcher?.totalEarnings || 0).toLocaleString()}
                       </p>
                     </div>
@@ -260,18 +260,18 @@ export default function SettingsPage() {
               </p>
 
               {profile?.company?.stripeAccountId ? (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4">
                   <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 bg-green-500 rounded-full" />
-                    <span className="font-medium text-green-800">Stripe Account Connected</span>
+                    <div className="h-2 w-2 bg-emerald-400 rounded-full" />
+                    <span className="font-medium text-emerald-300">Stripe Account Connected</span>
                   </div>
-                  <p className="text-sm text-green-600 mt-1">
+                  <p className="text-sm text-emerald-300/80 mt-1">
                     Your account is ready to receive payments.
                   </p>
                 </div>
               ) : (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-yellow-800">
+                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                  <p className="text-yellow-300">
                     You haven't connected a Stripe account yet. Connect to start funding bounties.
                   </p>
                 </div>

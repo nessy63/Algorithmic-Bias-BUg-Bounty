@@ -30,19 +30,30 @@ export class AIProxyService {
         signal: AbortSignal.timeout(SANDBOX_TIMEOUT),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as {
+        output?: string;
+        metrics?: Record<string, number>;
+        execution_time?: number;
+      };
+
+      // Sandbox reports execution time in seconds; fall back to a local
+      // measurement (also seconds) if it is missing.
+      const executionTime =
+        typeof result.execution_time === 'number'
+          ? result.execution_time
+          : (Date.now() - startTime) / 1000;
 
       return {
         success: true,
         output: result.output,
-        executionTime: Date.now() - startTime,
+        executionTime,
         metrics: result.metrics,
       };
     } catch (error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Sandbox execution failed',
-        executionTime: Date.now() - startTime,
+        executionTime: (Date.now() - startTime) / 1000,
       };
     }
   }

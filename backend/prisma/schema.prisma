@@ -15,10 +15,10 @@ model User {
   role          String      @default("RESEARCHER")
   company       Company?    @relation(fields: [companyId], references: [id])
   companyId     String?     @map("company_id")
-  researcher    Researcher?
-  researcherId  String?     @unique @map("researcher_id")
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
+  researcher    Researcher?  @relation(fields: [researcherId], references: [id])
+  researcherId  String?      @unique @map("researcher_id")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -48,8 +48,7 @@ model Researcher {
   githubUrl     String?     @map("github_url")
   reputation    Int         @default(0)
   totalEarnings Float       @default(0) @map("total_earnings")
-  user          User?       @relation(fields: [userId], references: [id])
-  userId        String?     @unique @map("user_id")
+  user          User?
   bugReports    BugReport[]
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")

@@ -91,8 +91,8 @@ export default function CompanyModelsPage() {
               <CardContent>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="p-3 bg-primary-100 rounded-lg">
-                      <Bot className="h-6 w-6 text-primary-600" />
+                    <div className="p-3 bg-primary-500/15 rounded-lg">
+                      <Bot className="h-6 w-6 text-primary-400" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">{model.name}</h3>
@@ -110,7 +110,7 @@ export default function CompanyModelsPage() {
                     </span>
                     <button
                       onClick={() => handleDelete(model.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                      className="p-2 text-gray-400 hover:text-red-400 transition-colors"
                     >
                       <Trash2 size={18} />
                     </button>

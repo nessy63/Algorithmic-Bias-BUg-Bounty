@@ -9,9 +9,9 @@ interface BountyTrackerProps {
 export default function BountyTracker({ bounty }: BountyTrackerProps) {
   const severityColors = {
     LOW: 'text-gray-600',
-    MEDIUM: 'text-yellow-600',
-    HIGH: 'text-orange-600',
-    CRITICAL: 'text-red-600',
+    MEDIUM: 'text-yellow-400',
+    HIGH: 'text-orange-400',
+    CRITICAL: 'text-red-400',
   };
 
   const statusColors = {
@@ -41,8 +41,8 @@ export default function BountyTracker({ bounty }: BountyTrackerProps) {
 
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-1">
-            <DollarSign size={16} className="text-green-600" />
-            <span className="font-medium text-green-600">${bounty.amount.toLocaleString()}</span>
+            <DollarSign size={16} className="text-emerald-400" />
+            <span className="font-medium text-emerald-400">${bounty.amount.toLocaleString()}</span>
           </div>
 
           <div className={`flex items-center gap-1 ${severityColors[bounty.severity]}`}>

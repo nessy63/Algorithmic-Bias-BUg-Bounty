@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { BugReport } from '@/types';
 import Card, { CardContent } from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 import { FileText, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
@@ -39,9 +40,9 @@ export default function ResearcherReportsPage() {
 
   const severityColors = {
     LOW: 'text-gray-600',
-    MEDIUM: 'text-yellow-600',
-    HIGH: 'text-orange-600',
-    CRITICAL: 'text-red-600',
+    MEDIUM: 'text-yellow-400',
+    HIGH: 'text-orange-400',
+    CRITICAL: 'text-red-400',
   };
 
   return (
@@ -58,7 +59,7 @@ export default function ResearcherReportsPage() {
             <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No reports yet</h3>
             <p className="text-gray-500 mb-4">Start browsing models to find bounties</p>
-            <Link href="/models" className="text-primary-600 hover:text-primary-700 font-medium">
+            <Link href="/models" className="text-primary-400 hover:text-primary-300 font-medium">
               Browse Models →
             </Link>
           </CardContent>
@@ -84,7 +85,7 @@ export default function ResearcherReportsPage() {
                       <span className={severityColors[report.severity]}>
                         {report.severity}
                       </span>
-                      <span className="text-green-600 font-medium">
+                      <span className="text-emerald-400 font-medium">
                         Bounty: ${report.bounty.amount.toLocaleString()}
                       </span>
                       <span className="text-gray-500">

@@ -102,7 +102,7 @@ export default function CompanyBountiesPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <p className="text-lg font-bold text-green-600">${bounty.amount.toLocaleString()}</p>
+                      <p className="text-lg font-bold text-emerald-400">${bounty.amount.toLocaleString()}</p>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${severityColors[bounty.severity]}`}>
                         {bounty.severity}
                       </span>

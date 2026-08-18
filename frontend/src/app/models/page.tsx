@@ -36,7 +36,7 @@ export default function ModelsPage() {
       model.description.toLowerCase().includes(search.toLowerCase())
   );
 
-  const categories = [...new Set(models.map((m) => m.category))];
+  const categories = Array.from(new Set(models.map((m) => m.category)));
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

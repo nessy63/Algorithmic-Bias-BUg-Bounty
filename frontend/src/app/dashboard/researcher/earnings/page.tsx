@@ -59,8 +59,8 @@ export default function ResearcherEarningsPage() {
                   ${(data?.totalEarnings || 0).toLocaleString()}
                 </p>
               </div>
-              <div className="p-3 bg-green-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-green-600" />
+              <div className="p-3 bg-emerald-500/15 rounded-lg">
+                <DollarSign className="h-6 w-6 text-emerald-400" />
               </div>
             </div>
           </CardContent>
@@ -73,8 +73,8 @@ export default function ResearcherEarningsPage() {
                 <p className="text-sm text-gray-500">Reputation Score</p>
                 <p className="text-3xl font-bold text-gray-900">{data?.reputation || 0}</p>
               </div>
-              <div className="p-3 bg-primary-100 rounded-lg">
-                <Award className="h-6 w-6 text-primary-600" />
+              <div className="p-3 bg-primary-500/15 rounded-lg">
+                <Award className="h-6 w-6 text-primary-400" />
               </div>
             </div>
           </CardContent>
@@ -87,8 +87,8 @@ export default function ResearcherEarningsPage() {
                 <p className="text-sm text-gray-500">Bugs Paid</p>
                 <p className="text-3xl font-bold text-gray-900">{data?.paidBugs.length || 0}</p>
               </div>
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+              <div className="p-3 bg-purple-500/15 rounded-lg">
+                <TrendingUp className="h-6 w-6 text-purple-400" />
               </div>
             </div>
           </CardContent>
@@ -113,7 +113,7 @@ export default function ResearcherEarningsPage() {
                       {new Date(bug.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <p className="text-lg font-semibold text-green-600">
+                  <p className="text-lg font-semibold text-emerald-400">
                     +${bug.bounty.amount.toLocaleString()}
                   </p>
                 </div>

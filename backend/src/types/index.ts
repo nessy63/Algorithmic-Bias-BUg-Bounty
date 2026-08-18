@@ -1,5 +1,11 @@
 import { Request } from 'express';
-import { UserRole, BugStatus, BountyStatus, SeverityLevel, ModelStatus, EscrowStatus } from '@prisma/client';
+
+export type UserRole = 'COMPANY' | 'RESEARCHER';
+export type BugStatus = 'SUBMITTED' | 'UNDER_REVIEW' | 'REPRODUCIBLE' | 'NOT_REPRODUCIBLE' | 'ACCEPTED' | 'REJECTED' | 'PAID';
+export type BountyStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED' | 'EXPIRED';
+export type SeverityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+export type ModelStatus = 'ACTIVE' | 'PAUSED' | 'UNDER_REVIEW';
+export type EscrowStatus = 'PENDING' | 'HELD' | 'RELEASED' | 'REFUNDED';
 
 export interface AuthUser {
   id: string;

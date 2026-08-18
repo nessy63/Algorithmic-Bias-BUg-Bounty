@@ -7,18 +7,31 @@ import { JWT_SECRET, JWT_EXPIRES_IN, BCRYPT_ROUNDS } from '../config/auth';
 import { validate } from '../middleware/validation';
 import { authLimiter } from '../middleware/rateLimit';
 import { authenticate } from '../middleware/auth';
+import { logger } from '../config/logger';
 import { AuthRequest } from '../types';
 
 const router = Router();
 
-const registerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  name: z.string().min(2),
-  role: z.enum(['COMPANY', 'RESEARCHER']),
-  companyName: z.string().optional(),
-  companyDescription: z.string().optional(),
-});
+const registerSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(8),
+    name: z.string().min(2),
+    role: z.enum(['COMPANY', 'RESEARCHER']),
+    companyName: z.string().optional(),
+    companyDescription: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    // Company accounts must provide a company name — otherwise the handler
+    // would crash on companyName!.toLowerCase() with a 500.
+    if (data.role === 'COMPANY' && !data.companyName?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['companyName'],
+        message: 'Company name is required for company accounts',
+      });
+    }
+  });
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -89,7 +102,11 @@ router.post('/register', authLimiter, validate(registerSchema), async (req: Auth
       token,
     });
   } catch (error) {
-    console.error('Registration error:', error);
+    logger.error('Registration failed', {
+      email: req.body.email,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     res.status(500).json({ error: 'Registration failed' });
   }
 });
@@ -134,7 +151,11 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
       token,
     });
   } catch (error) {
-    console.error('Login error:', error);
+    logger.error('Login failed', {
+      email: req.body.email,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     res.status(500).json({ error: 'Login failed' });
   }
 });

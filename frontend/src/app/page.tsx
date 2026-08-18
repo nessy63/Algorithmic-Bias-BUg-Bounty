@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+      <section className="relative bg-gradient-to-br from-primary-700 to-primary-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-6">
@@ -40,7 +40,7 @@ export default function Home() {
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link href="/register">
-                <Button size="lg" className="bg-white text-primary-600 hover:bg-primary-50">
+                <Button size="lg" className="bg-white text-primary-700 hover:bg-primary-50">
                   Start Hunting <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -55,14 +55,14 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-navy-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="h-8 w-8 text-primary-600" />
+                <div className="w-16 h-16 bg-primary-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="h-8 w-8 text-primary-400" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -97,7 +97,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary-600 text-white">
+      <section className="py-20 bg-primary-700 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Make AI Fairer?</h2>
           <p className="text-primary-100 mb-8">
@@ -106,7 +106,7 @@ export default function Home() {
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link href="/register?role=COMPANY">
-              <Button size="lg" className="bg-white text-primary-600 hover:bg-primary-50">
+              <Button size="lg" className="bg-white text-primary-700 hover:bg-primary-50">
                 List Your AI Model
               </Button>
             </Link>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -9,7 +9,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import toast from 'react-hot-toast';
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setToken, setUser } = useAuthStore();
@@ -60,7 +60,7 @@ export default function RegisterPage() {
           <p className="text-gray-600 mt-2">Join the fight against algorithmic bias</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-navy-800 rounded-xl shadow-lg border border-gray-200 p-8">
           {/* Role Selection */}
           <div className="flex gap-4 mb-6">
             <button
@@ -68,7 +68,7 @@ export default function RegisterPage() {
               onClick={() => setRole('RESEARCHER')}
               className={`flex-1 py-3 rounded-lg font-medium transition-colors ${
                 role === 'RESEARCHER'
-                  ? 'bg-primary-600 text-white'
+                  ? 'bg-primary-700 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -79,7 +79,7 @@ export default function RegisterPage() {
               onClick={() => setRole('COMPANY')}
               className={`flex-1 py-3 rounded-lg font-medium transition-colors ${
                 role === 'COMPANY'
-                  ? 'bg-primary-600 text-white'
+                  ? 'bg-primary-700 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -156,7 +156,7 @@ export default function RegisterPage() {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               Already have an account?{' '}
-              <Link href="/login" className="text-primary-600 hover:text-primary-700 font-medium">
+              <Link href="/login" className="text-primary-400 hover:text-primary-300 font-medium">
                 Sign in
               </Link>
             </p>
@@ -164,5 +164,13 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
   );
 }

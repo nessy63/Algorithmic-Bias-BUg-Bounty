@@ -43,7 +43,7 @@ export default function LoginPage() {
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-navy-800 rounded-xl shadow-lg border border-gray-200 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Email"
@@ -71,7 +71,7 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               Don't have an account?{' '}
-              <Link href="/register" className="text-primary-600 hover:text-primary-700 font-medium">
+              <Link href="/register" className="text-primary-400 hover:text-primary-300 font-medium">
                 Sign up
               </Link>
             </p>

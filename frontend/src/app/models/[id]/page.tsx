@@ -36,9 +36,9 @@ export default function ModelDetailPage() {
 
   const severityColors = {
     LOW: 'text-gray-600',
-    MEDIUM: 'text-yellow-600',
-    HIGH: 'text-orange-600',
-    CRITICAL: 'text-red-600',
+    MEDIUM: 'text-yellow-400',
+    HIGH: 'text-orange-400',
+    CRITICAL: 'text-red-400',
   };
 
   if (loading) {
@@ -60,10 +60,10 @@ export default function ModelDetailPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Model Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+      <div className="bg-navy-800 rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
         <div className="flex items-start gap-4">
-          <div className="p-4 bg-primary-100 rounded-xl">
-            <Bot className="h-10 w-10 text-primary-600" />
+          <div className="p-4 bg-primary-500/15 rounded-xl">
+            <Bot className="h-10 w-10 text-primary-400" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
@@ -107,7 +107,7 @@ export default function ModelDetailPage() {
                         <h3 className="font-semibold text-gray-900 mb-1">{bounty.title}</h3>
                         <p className="text-sm text-gray-600 mb-3">{bounty.description}</p>
                         <div className="flex items-center gap-4">
-                          <span className="flex items-center gap-1 text-green-600 font-semibold">
+                          <span className="flex items-center gap-1 text-emerald-400 font-semibold">
                             <DollarSign size={16} />
                             {bounty.amount.toLocaleString()}
                           </span>

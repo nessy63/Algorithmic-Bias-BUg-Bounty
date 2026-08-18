@@ -1,3 +1,5 @@
+import { logger } from '../config/logger';
+
 interface EmailOptions {
   to: string;
   subject: string;
@@ -7,7 +9,7 @@ interface EmailOptions {
 export class EmailService {
   static async send(options: EmailOptions) {
     // In production, integrate with SendGrid, AWS SES, or similar
-    console.log('Email sent:', {
+    logger.info('Email sent', {
       to: options.to,
       subject: options.subject,
     });

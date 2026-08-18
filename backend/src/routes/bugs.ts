@@ -7,6 +7,7 @@ import { AuthRequest } from '../types';
 import { AIProxyService } from '../services/aiProxy';
 import { StripeService } from '../services/stripe';
 import { EmailService } from '../services/email';
+import { logger } from '../config/logger';
 import { sandboxLimiter } from '../middleware/rateLimit';
 
 const router = Router();
@@ -158,6 +159,8 @@ router.put('/:id', authenticate, authorize('COMPANY'), validate(updateBugSchema)
     return res.status(404).json({ error: 'Bug report not found' });
   }
 
+  const previousStatus = existing.status;
+
   const bug = await prisma.bugReport.update({
     where: { id: req.params.id },
     data: req.body,
@@ -172,12 +175,29 @@ router.put('/:id', authenticate, authorize('COMPANY'), validate(updateBugSchema)
   if (req.body.status === 'ACCEPTED') {
     const escrowAmount = Math.min(bug.bounty.amount, bug.bounty.maxPayout);
 
-    await StripeService.createEscrow(bug.id, escrowAmount);
-    await EmailService.sendBugReportAccepted(
-      bug.researcher.user!.email,
-      bug.title,
-      escrowAmount
-    );
+    try {
+      await StripeService.createEscrow(bug.id, escrowAmount);
+      await EmailService.sendBugReportAccepted(
+        bug.researcher.user!.email,
+        bug.title,
+        escrowAmount
+      );
+    } catch (escrowError) {
+      logger.error('Failed to create escrow for accepted bug report', {
+        bugId: bug.id,
+        error: escrowError instanceof Error ? escrowError.message : escrowError,
+      });
+
+      // Revert the status so the report isn't left as ACCEPTED without an escrow
+      await prisma.bugReport.update({
+        where: { id: bug.id },
+        data: { status: previousStatus },
+      });
+
+      return res.status(400).json({
+        error: 'Could not create escrow payment. Complete Stripe Connect onboarding in Settings first.',
+      });
+    }
   }
 
   res.json(bug);

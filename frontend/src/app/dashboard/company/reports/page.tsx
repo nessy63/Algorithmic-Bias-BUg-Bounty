@@ -54,9 +54,9 @@ export default function CompanyReportsPage() {
 
   const severityColors = {
     LOW: 'text-gray-600',
-    MEDIUM: 'text-yellow-600',
-    HIGH: 'text-orange-600',
-    CRITICAL: 'text-red-600',
+    MEDIUM: 'text-yellow-400',
+    HIGH: 'text-orange-400',
+    CRITICAL: 'text-red-400',
   };
 
   return (

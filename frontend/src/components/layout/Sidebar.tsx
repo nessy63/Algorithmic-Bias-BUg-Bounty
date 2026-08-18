@@ -12,6 +12,7 @@ import {
   Search,
   FileText,
   Shield,
+  ScrollText,
 } from 'lucide-react';
 
 const companyLinks = [
@@ -20,6 +21,7 @@ const companyLinks = [
   { href: '/dashboard/company/bounties', label: 'Bounties', icon: Wallet },
   { href: '/dashboard/company/reports', label: 'Bug Reports', icon: Bug },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { href: '/dashboard/logs', label: 'Logs', icon: ScrollText },
 ];
 
 const researcherLinks = [
@@ -29,6 +31,7 @@ const researcherLinks = [
   { href: '/dashboard/researcher/reports', label: 'My Reports', icon: FileText },
   { href: '/dashboard/researcher/earnings', label: 'Earnings', icon: Wallet },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { href: '/dashboard/logs', label: 'Logs', icon: ScrollText },
 ];
 
 export default function Sidebar() {
@@ -48,7 +51,7 @@ export default function Sidebar() {
               href={link.href}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-primary-100 text-primary-700'
+                  ? 'bg-primary-500/15 text-primary-300'
                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >
