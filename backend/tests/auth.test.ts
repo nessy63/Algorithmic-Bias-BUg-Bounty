@@ -5,6 +5,8 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const API_URL = 'http://localhost:3001';
+// Synthetic dev-default test fixture only — never a real secret. The running
+// server must be started with the same JWT_SECRET (backend/.env provides it).
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production-1234567890';
 
 describe('Authentication Tests', () => {

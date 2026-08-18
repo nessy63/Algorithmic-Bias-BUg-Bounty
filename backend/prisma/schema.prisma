@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // Must be set in every environment. For production include TLS:
-  // postgresql://user:pass@host:5432/db?sslmode=require
+  // URL comes from the DATABASE_URL env var (never hardcoded). For production
+  // TLS, append ?sslmode=require to the connection string.
   url      = env("DATABASE_URL")
 }
 

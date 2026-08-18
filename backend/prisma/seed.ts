@@ -1,12 +1,16 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('Seeding database...');
 
-  const passwordHash = await bcrypt.hash('password123', 12);
+  // No hardcoded credentials: use SEED_PASSWORD if provided, otherwise generate
+  // a random one (the seed output never prints the actual password).
+  const seedPassword = process.env.SEED_PASSWORD || crypto.randomBytes(16).toString('hex');
+  const passwordHash = await bcrypt.hash(seedPassword, 12);
 
   // Create companies
   const company1 = await prisma.company.create({
@@ -163,7 +167,7 @@ async function main() {
   console.log('Companies:', company1.name, company2.name);
   // Emails and passwords are personal data — never print them to the console.
   console.log('Researchers: [REDACTED]');
-  console.log('Password for all accounts: [REDACTED]');
+  console.log('Password: set SEED_PASSWORD before seeding to use a known password; otherwise a random one was generated.');
 }
 
 main()

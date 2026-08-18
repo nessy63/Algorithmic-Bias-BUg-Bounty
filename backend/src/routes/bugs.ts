@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../config/database';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validation';
+import { parsePagination } from '../lib/pagination';
 import { AuthRequest } from '../types';
 import { AIProxyService } from '../services/aiProxy';
 import { StripeService } from '../services/stripe';
@@ -36,8 +37,18 @@ const updateBugSchema = z.object({
 
 // List bugs (filtered by role)
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
-  const { page = '1', limit = '20', status, modelId } = req.query;
-  const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
+  const { status, modelId } = req.query;
+  const { page, limit, skip } = parsePagination(req.query);
+
+  // Defense-in-depth: a token that claims a role without its required profile
+  // id must never fall through to an unfiltered query (Prisma ignores
+  // `undefined` filters, which would return every bug in the system).
+  if (req.user!.role === 'COMPANY' && !req.user!.companyId) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  if (req.user!.role === 'RESEARCHER' && !req.user!.researcherId) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
 
   let where: any = {};
 
@@ -61,7 +72,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
         researcher: { select: { user: { select: { name: true } } } },
       },
       skip,
-      take: parseInt(limit as string),
+      take: limit,
       orderBy: { createdAt: 'desc' },
     }),
     prisma.bugReport.count({ where }),
@@ -70,9 +81,9 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   res.json({
     data: bugs,
     total,
-    page: parseInt(page as string),
-    limit: parseInt(limit as string),
-    totalPages: Math.ceil(total / parseInt(limit as string)),
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
   });
 });
 
@@ -208,39 +219,54 @@ router.put('/:id', authenticate, authorize('COMPANY'), validate(updateBugSchema)
 
   // If accepted, create escrow and notify researcher
   if (req.body.status === 'ACCEPTED') {
-    const escrowAmount = Math.min(bug.bounty.amount, bug.bounty.maxPayout);
+    // Idempotency guard: never create a second escrow/payment intent for a bug
+    // that already has one. Without this, repeated ACCEPTED updates (retries,
+    // double-clicks, or ACCEPTED → REJECTED → ACCEPTED churn) would create a
+    // new payment intent each time and double-charge the company.
+    const existingEscrow = await prisma.escrow.findFirst({
+      where: { bugReportId: bug.id },
+    });
 
-    try {
-      await StripeService.createEscrow(bug.id, escrowAmount);
-
-      // Fetch the researcher's email server-side only — it must never appear
-      // in API responses.
-      const researcherUser = await prisma.user.findUnique({
-        where: { researcherId: bug.researcherId },
-        select: { email: true },
-      });
-      if (researcherUser?.email) {
-        await EmailService.sendBugReportAccepted(
-          researcherUser.email,
-          bug.title,
-          escrowAmount
-        );
-      }
-    } catch (escrowError) {
-      logger.error('Failed to create escrow for accepted bug report', {
+    if (existingEscrow) {
+      logger.warn('Skipping duplicate escrow creation', {
         bugId: bug.id,
-        error: escrowError instanceof Error ? escrowError.message : escrowError,
+        escrowId: existingEscrow.id,
       });
+    } else {
+      const escrowAmount = Math.min(bug.bounty.amount, bug.bounty.maxPayout);
 
-      // Revert the status so the report isn't left as ACCEPTED without an escrow
-      await prisma.bugReport.update({
-        where: { id: bug.id },
-        data: { status: previousStatus },
-      });
+      try {
+        await StripeService.createEscrow(bug.id, escrowAmount);
 
-      return res.status(400).json({
-        error: 'Could not create escrow payment. Complete Stripe Connect onboarding in Settings first.',
-      });
+        // Fetch the researcher's email server-side only — it must never appear
+        // in API responses.
+        const researcherUser = await prisma.user.findUnique({
+          where: { researcherId: bug.researcherId },
+          select: { email: true },
+        });
+        if (researcherUser?.email) {
+          await EmailService.sendBugReportAccepted(
+            researcherUser.email,
+            bug.title,
+            escrowAmount
+          );
+        }
+      } catch (escrowError) {
+        logger.error('Failed to create escrow for accepted bug report', {
+          bugId: bug.id,
+          error: escrowError instanceof Error ? escrowError.message : escrowError,
+        });
+
+        // Revert the status so the report isn't left as ACCEPTED without an escrow
+        await prisma.bugReport.update({
+          where: { id: bug.id },
+          data: { status: previousStatus },
+        });
+
+        return res.status(400).json({
+          error: 'Could not create escrow payment. Complete Stripe Connect onboarding in Settings first.',
+        });
+      }
     }
   }
 

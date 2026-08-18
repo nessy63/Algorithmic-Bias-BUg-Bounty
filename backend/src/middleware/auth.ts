@@ -17,7 +17,9 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthUser;
+    // Pin the algorithm explicitly — never let the library negotiate an
+    // algorithm from the token itself (prevents alg-confusion/'none' attacks).
+    const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as AuthUser;
     req.user = decoded;
     next();
   } catch (error) {

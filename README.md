@@ -163,6 +163,25 @@ Key variables:
 - All responses carry security headers (helmet on the API, `next.config.js`
   headers on the frontend)
 
+### Secret hygiene
+
+- **All secrets live in environment variables only** — never in source code,
+  config files, comments, or Dockerfiles. `.env` files are gitignored; commit
+  `.env.example` templates with placeholders only.
+- **Client-side exposure:** only `NEXT_PUBLIC_`-prefixed vars reach the browser.
+  Never prefix a secret (API key, DB URL, JWT secret) with `NEXT_PUBLIC_`.
+  There is no Supabase integration; if one is added, the anon key is safe
+  client-side **only** with Row Level Security on every table, and the service
+  role key must never ship client-side.
+- **Rotation warning:** early development versions of this repo contained
+  hardcoded development credentials and default secrets (e.g. the seed
+  password `password123` and the known dev `JWT_SECRET` fallbacks) in git
+  history. Even though those are known dev defaults, **rotate any secret that
+  may have existed in code or history before relying on it in production** —
+  generate a fresh `JWT_SECRET`, new Stripe/Resend keys, and a new database
+  password. Treat any value that ever appeared in source or git history as
+  compromised.
+
 ## Privacy
 
 See [`audit.md`](audit.md) for the personal-data flow map and the logging,

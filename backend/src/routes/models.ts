@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../config/database';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validation';
+import { parsePagination } from '../lib/pagination';
 import { AuthRequest } from '../types';
 
 const router = Router();
@@ -25,8 +26,8 @@ const updateModelSchema = z.object({
 
 // List all models (public)
 router.get('/', async (req: AuthRequest, res: Response) => {
-  const { page = '1', limit = '20', category, status } = req.query;
-  const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
+  const { category, status } = req.query;
+  const { page, limit, skip } = parsePagination(req.query);
 
   const where = {
     ...(category && { category: category as string }),
@@ -51,7 +52,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
         company: { select: { name: true, slug: true } },
       },
       skip,
-      take: parseInt(limit as string),
+      take: limit,
       orderBy: { createdAt: 'desc' },
     }),
     prisma.aIModel.count({ where }),
@@ -60,9 +61,9 @@ router.get('/', async (req: AuthRequest, res: Response) => {
   res.json({
     data: models,
     total,
-    page: parseInt(page as string),
-    limit: parseInt(limit as string),
-    totalPages: Math.ceil(total / parseInt(limit as string)),
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
   });
 });
 

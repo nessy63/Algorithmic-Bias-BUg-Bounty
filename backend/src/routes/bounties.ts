@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../config/database';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validation';
+import { parsePagination } from '../lib/pagination';
 import { AuthRequest } from '../types';
 
 const router = Router();
@@ -26,8 +27,8 @@ const updateBountySchema = z.object({
 
 // List bounties (public)
 router.get('/', async (req: AuthRequest, res: Response) => {
-  const { page = '1', limit = '20', status, severity, modelId } = req.query;
-  const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
+  const { status, severity, modelId } = req.query;
+  const { page, limit, skip } = parsePagination(req.query);
 
   const where: any = {};
   if (status) where.status = status;
@@ -43,7 +44,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
         _count: { select: { bugReports: true } },
       },
       skip,
-      take: parseInt(limit as string),
+      take: limit,
       orderBy: { createdAt: 'desc' },
     }),
     prisma.bounty.count({ where }),
@@ -52,9 +53,9 @@ router.get('/', async (req: AuthRequest, res: Response) => {
   res.json({
     data: bounties,
     total,
-    page: parseInt(page as string),
-    limit: parseInt(limit as string),
-    totalPages: Math.ceil(total / parseInt(limit as string)),
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
   });
 });
 

@@ -3,15 +3,54 @@ from pydantic import BaseModel
 import httpx
 import time
 import asyncio
+import ipaddress
 import logging
+import socket
 from typing import Optional, Dict, Any
+from urllib.parse import urlparse
 
 # Error details are logged server-side only — clients get generic messages so
 # internal hosts/ports/stack traces never leak.
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("sandbox")
 
-app = FastAPI(title="AI Model Sandbox", version="1.0.0")
+# SSRF protection: the sandbox forwards requests to a company-supplied model
+# endpoint. A malicious endpoint (e.g. 169.254.169.254 cloud metadata, internal
+# services, or a non-http scheme) would let an attacker read internal network
+# resources. Refuse anything that is not http(s) or that resolves to a
+# private/loopback/link-local/reserved address.
+def is_blocked_target(url: str) -> bool:
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        return True
+    if not parsed.hostname:
+        return True
+    try:
+        infos = socket.getaddrinfo(parsed.hostname, None)
+    except socket.gaierror:
+        return True  # unresolvable host — refuse rather than guess
+    for info in infos:
+        ip = ipaddress.ip_address(info[4][0])
+        if (
+            ip.is_private
+            or ip.is_loopback
+            or ip.is_link_local
+            or ip.is_reserved
+            or ip.is_unspecified
+            or ip.is_multicast
+        ):
+            return True
+    return False
+
+
+# Docs (Swagger/OpenAPI) are internal-only — never exposed on the sandbox port.
+app = FastAPI(
+    title="AI Model Sandbox",
+    version="1.0.0",
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+)
 
 class TestRequest(BaseModel):
     model_endpoint: str
@@ -60,8 +99,15 @@ async def test_model(request: TestRequest):
 
     start_time = time.time()
 
+    if is_blocked_target(request.model_endpoint):
+        return TestResponse(
+            success=False,
+            error="Model endpoint is not allowed",
+            execution_time=time.time() - start_time
+        )
+
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=30.0, follow_redirects=False) as client:
             # Forward request to actual model endpoint
             response = await client.post(
                 request.model_endpoint,
@@ -122,13 +168,16 @@ async def run_bias_test(request: TestRequest):
         "disability": ["able-bodied", "disabled"],
     }
 
+    if is_blocked_target(request.model_endpoint):
+        raise HTTPException(status_code=400, detail="Model endpoint is not allowed")
+
     test_type = request.test_type.replace("bias_", "")
     test_values = bias_tests.get(test_type, bias_tests["gender"])
 
     results = []
 
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=30.0, follow_redirects=False) as client:
             for value in test_values:
                 # Replace placeholder in input with test value
                 test_input = request.input.replace("{{}}", value)

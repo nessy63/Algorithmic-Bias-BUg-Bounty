@@ -1,10 +1,11 @@
 import { logger } from './logger';
 
-// Variables the app cannot operate without. Missing values abort startup in
-// production and log a warning in development.
-const CRITICAL_ENV = [
-  'DATABASE_URL',
-  'JWT_SECRET',
+// Variables the app cannot operate without — missing values abort startup in
+// every environment with a clear message.
+const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET'] as const;
+
+// Required for production deployments; development logs a warning instead.
+const REQUIRED_IN_PRODUCTION = [
   'STRIPE_SECRET_KEY',
   'STRIPE_WEBHOOK_SECRET',
   'NEXT_PUBLIC_APP_URL',
@@ -19,10 +20,17 @@ const KNOWN_DEV_JWT_SECRETS = [
 
 export function validateEnv(): void {
   const isProd = process.env.NODE_ENV === 'production';
-  const missing = CRITICAL_ENV.filter((key) => !process.env[key]);
 
-  if (missing.length > 0) {
-    const message = `Missing required environment variable(s): ${missing.join(', ')}`;
+  const missingRequired = REQUIRED_ENV.filter((key) => !process.env[key]);
+  if (missingRequired.length > 0) {
+    throw new Error(
+      `Missing required environment variable(s): ${missingRequired.join(', ')} — refusing to start.`
+    );
+  }
+
+  const missingProd = REQUIRED_IN_PRODUCTION.filter((key) => !process.env[key]);
+  if (missingProd.length > 0) {
+    const message = `Missing required environment variable(s): ${missingProd.join(', ')}`;
     if (isProd) {
       throw new Error(`${message} — refusing to start.`);
     }
