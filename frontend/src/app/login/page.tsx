@@ -77,14 +77,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-          <p className="text-sm text-gray-600 font-medium mb-2">Demo Accounts:</p>
-          <div className="text-sm text-gray-500 space-y-1">
-            <p><strong>Company:</strong> admin@techai.example.com</p>
-            <p><strong>Researcher:</strong> researcher1@example.com</p>
-            <p><strong>Password:</strong> password123</p>
-          </div>
-        </div>
       </div>
     </div>
   );

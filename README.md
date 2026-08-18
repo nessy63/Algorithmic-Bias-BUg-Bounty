@@ -34,14 +34,15 @@ A full-stack platform where enterprise companies list their AI models and indepe
 # Clone and enter directory
 cd "Algorithmic Bias Bug Bounty platform"
 
-# Copy environment file
+# Copy environment file and fill in the REQUIRED values
+# (POSTGRES_PASSWORD, JWT_SECRET — compose refuses to start without them)
 cp .env.example .env
 
 # Start all services
 docker-compose up -d
 
 # Run database migrations
-docker-compose exec backend npx prisma migrate dev
+docker-compose exec backend npx prisma migrate deploy
 
 # Seed database
 docker-compose exec backend npx prisma db seed
@@ -78,14 +79,9 @@ cd ../sandbox && python main.py  # Sandbox on port 8000
 
 ## Demo Accounts
 
-After seeding the database:
-
-| Role | Email | Password |
-|------|-------|----------|
-| Company | admin@techai.example.com | password123 |
-| Company | admin@visionml.example.com | password123 |
-| Researcher | researcher1@example.com | password123 |
-| Researcher | researcher2@example.com | password123 |
+After seeding the database there are demo accounts for both roles. For security
+the credentials are not listed here — see `backend/prisma/seed.ts` for the
+seeded emails and the shared demo password.
 
 ## Project Structure
 
@@ -143,13 +139,34 @@ algorithmic-bias-bugbounty/
 
 ## Environment Variables
 
-See `.env.example` for all required environment variables.
+See `.env.example` for the full list. The backend **refuses to start in
+production** when a required variable is missing or insecure.
 
 Key variables:
-- `DATABASE_URL` - PostgreSQL connection string
-- `JWT_SECRET` - Secret for JWT tokens
-- `STRIPE_SECRET_KEY` - Stripe API key
-- `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret
+- `DATABASE_URL` - PostgreSQL connection string. **Required.** Use `?sslmode=require` for TLS in production
+- `NODE_ENV` - Set to `production` in deployed environments
+- `JWT_SECRET` - Secret for JWT tokens. **Required** and must be a unique random value in production (the known dev defaults are rejected)
+- `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` - Stripe credentials. Required in production
+- `RESEND_API_KEY` - Resend API key for transactional email (bug report notifications). Leave unset in development — sends are skipped and logged as `[REDACTED]`
+- `RESEND_EMAIL_FROM` - Verified sender address (default `onboarding@resend.dev`, which only works for testing)
+- `ADMIN_EMAILS` - Comma-separated emails with admin access (e.g. the log viewer). Alternative: set a user's `role` to `ADMIN` in the DB
+- `ENABLE_LOG_VIEWER` - Set to `true` to turn on the (admin-only) log viewer endpoint
+
+### Deployment checklist
+
+- Set `NODE_ENV=production`
+- Use a managed PostgreSQL with TLS (`sslmode=require`) — the Docker `db`
+  service is for local development only and its port should not be published
+  in production
+- Generate a unique `JWT_SECRET` (e.g. `openssl rand -base64 48`)
+- Run migrations with `npx prisma migrate deploy` (never `migrate dev` in production)
+- All responses carry security headers (helmet on the API, `next.config.js`
+  headers on the frontend)
+
+## Privacy
+
+See [`audit.md`](audit.md) for the personal-data flow map and the logging,
+redaction, and API-response rules all changes must follow.
 
 ## License
 

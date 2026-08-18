@@ -82,7 +82,9 @@ describe('Authentication Tests', () => {
       expect(data.user).toBeDefined();
       expect(data.user.email).toBe('newcompany@test.com');
       expect(data.user.role).toBe('COMPANY');
-      expect(data.token).toBeDefined();
+      // The session token must NOT be returned in the body — only the
+      // httpOnly cookie carries it.
+      expect(data.token).toBeUndefined();
     });
 
     it('should register a new researcher', async () => {
@@ -103,7 +105,7 @@ describe('Authentication Tests', () => {
       expect(data.user).toBeDefined();
       expect(data.user.email).toBe('newresearcher@test.com');
       expect(data.user.role).toBe('RESEARCHER');
-      expect(data.token).toBeDefined();
+      expect(data.token).toBeUndefined();
     });
 
     it('should reject duplicate email', async () => {
@@ -175,10 +177,15 @@ describe('Authentication Tests', () => {
       expect(data.user).toBeDefined();
       expect(data.user.email).toBe('company@test.com');
       expect(data.user.role).toBe('COMPANY');
-      expect(data.token).toBeDefined();
+      expect(data.token).toBeUndefined();
+
+      // Session token is delivered via the httpOnly cookie, never the body.
+      const setCookie = response.headers.get('set-cookie') || '';
+      const match = setCookie.match(/token=([^;]+)/);
+      expect(match).not.toBeNull();
 
       // Verify JWT token
-      const decoded = jwt.verify(data.token, JWT_SECRET) as any;
+      const decoded = jwt.verify(match![1], JWT_SECRET) as any;
       expect(decoded.email).toBe('company@test.com');
       expect(decoded.role).toBe('COMPANY');
     });
@@ -199,7 +206,7 @@ describe('Authentication Tests', () => {
       expect(data.user).toBeDefined();
       expect(data.user.email).toBe('researcher@test.com');
       expect(data.user.role).toBe('RESEARCHER');
-      expect(data.token).toBeDefined();
+      expect(data.token).toBeUndefined();
     });
 
     it('should reject wrong password', async () => {
@@ -247,8 +254,12 @@ describe('Authentication Tests', () => {
           password: 'testpassword123',
         }),
       });
-      const data = await response.json();
-      authToken = data.token;
+      await response.json();
+      // Extract the session token from the httpOnly cookie (it is never
+      // returned in the response body).
+      const setCookie = response.headers.get('set-cookie') || '';
+      const match = setCookie.match(/token=([^;]+)/);
+      authToken = match ? match[1] : '';
     });
 
     it('should return current user with valid token', async () => {

@@ -38,3 +38,26 @@ export const authorize = (...roles: string[]) => {
     next();
   };
 };
+
+// Admin-only gate for sensitive endpoints (e.g. the log viewer).
+// Access is granted by an ADMIN role (set directly in the DB) or by listing
+// the user's email in the ADMIN_EMAILS env var — no schema change required.
+export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  const adminEmails = (process.env.ADMIN_EMAILS || '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+
+  const isAdminRole = req.user.role === 'ADMIN';
+  const isAdminEmail = adminEmails.includes(req.user.email.toLowerCase());
+
+  if (!isAdminRole && !isAdminEmail) {
+    return res.status(403).json({ error: 'Insufficient permissions' });
+  }
+
+  next();
+};

@@ -63,7 +63,11 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
   const bounty = await prisma.bounty.findUnique({
     where: { id: req.params.id },
     include: {
-      model: true,
+      // Field-level filtering: drop internal ids (companyId, modelId) and the
+      // model's apiEndpoint from the public detail view.
+      model: {
+        select: { id: true, name: true, version: true, category: true, status: true },
+      },
       company: { select: { name: true, slug: true, description: true } },
       bugReports: {
         select: { id: true, title: true, status: true, severity: true, createdAt: true },
@@ -97,7 +101,7 @@ router.post('/', authenticate, authorize('COMPANY'), validate(createBountySchema
       ...req.body,
       companyId: req.user!.companyId!,
     },
-    include: { model: true },
+    include: { model: { select: { name: true } } },
   });
 
   res.status(201).json(bounty);

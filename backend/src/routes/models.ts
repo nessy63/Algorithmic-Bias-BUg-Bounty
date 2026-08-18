@@ -36,7 +36,20 @@ router.get('/', async (req: AuthRequest, res: Response) => {
   const [models, total] = await Promise.all([
     prisma.aIModel.findMany({
       where,
-      include: { company: { select: { name: true, slug: true } } },
+      // Field-level filtering: never expose internal ids (companyId) or
+      // unpublished documentation on a public listing. apiEndpoint is kept
+      // because the sandbox testing feature needs it to run tests.
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        version: true,
+        category: true,
+        status: true,
+        apiEndpoint: true,
+        createdAt: true,
+        company: { select: { name: true, slug: true } },
+      },
       skip,
       take: parseInt(limit as string),
       orderBy: { createdAt: 'desc' },
@@ -57,11 +70,33 @@ router.get('/', async (req: AuthRequest, res: Response) => {
 router.get('/:id', async (req: AuthRequest, res: Response) => {
   const model = await prisma.aIModel.findUnique({
     where: { id: req.params.id },
-    include: {
+    // Field-level filtering: drop internal ids (companyId) and trim bounties
+    // to the fields a public visitor needs.
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      version: true,
+      category: true,
+      status: true,
+      apiEndpoint: true,
+      documentation: true,
+      createdAt: true,
       company: { select: { name: true, slug: true, description: true } },
       bounties: {
         where: { status: 'OPEN' },
         orderBy: { amount: 'desc' },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          amount: true,
+          maxPayout: true,
+          severity: true,
+          status: true,
+          expiresAt: true,
+          createdAt: true,
+        },
       },
       _count: { select: { bugReports: true } },
     },

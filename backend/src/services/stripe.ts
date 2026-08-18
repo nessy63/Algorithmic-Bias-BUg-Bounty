@@ -2,10 +2,6 @@ import { stripe } from '../config/stripe';
 import prisma from '../config/database';
 
 export class StripeService {
-  static async createCustomer(email: string, name: string) {
-    return stripe.customers.create({ email, name });
-  }
-
   static async createConnectAccount(email: string) {
     return stripe.accounts.create({
       type: 'express',

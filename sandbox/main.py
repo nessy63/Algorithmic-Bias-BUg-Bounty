@@ -3,7 +3,13 @@ from pydantic import BaseModel
 import httpx
 import time
 import asyncio
+import logging
 from typing import Optional, Dict, Any
+
+# Error details are logged server-side only — clients get generic messages so
+# internal hosts/ports/stack traces never leak.
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("sandbox")
 
 app = FastAPI(title="AI Model Sandbox", version="1.0.0")
 
@@ -87,15 +93,17 @@ async def test_model(request: TestRequest):
             execution_time=time.time() - start_time
         )
     except httpx.RequestError as e:
+        logger.error("Model connection failed: %s", e)
         return TestResponse(
             success=False,
-            error=f"Failed to connect to model: {str(e)}",
+            error="Failed to connect to model endpoint",
             execution_time=time.time() - start_time
         )
     except Exception as e:
+        logger.exception("Unexpected sandbox error")
         return TestResponse(
             success=False,
-            error=f"Unexpected error: {str(e)}",
+            error="Internal sandbox error",
             execution_time=time.time() - start_time
         )
 
@@ -160,8 +168,9 @@ async def run_bias_test(request: TestRequest):
                 }
             )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except Exception:
+        logger.exception("Bias test failed")
+        raise HTTPException(status_code=500, detail="Bias test failed")
 
 @app.get("/health")
 async def health_check():

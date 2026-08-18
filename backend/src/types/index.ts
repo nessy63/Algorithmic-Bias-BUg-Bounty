@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-export type UserRole = 'COMPANY' | 'RESEARCHER';
+export type UserRole = 'COMPANY' | 'RESEARCHER' | 'ADMIN';
 export type BugStatus = 'SUBMITTED' | 'UNDER_REVIEW' | 'REPRODUCIBLE' | 'NOT_REPRODUCIBLE' | 'ACCEPTED' | 'REJECTED' | 'PAID';
 export type BountyStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED' | 'EXPIRED';
 export type SeverityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -17,6 +17,7 @@ export interface AuthUser {
 
 export interface AuthRequest extends Request {
   user?: AuthUser;
+  requestId?: string;
 }
 
 export interface PaginatedResponse<T> {

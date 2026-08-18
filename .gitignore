@@ -39,7 +39,7 @@ backend/logs/
 Thumbs.db
 
 # Prisma
-backend/prisma/migrations/
+# Note: migrations are committed on purpose — production deploys run `prisma migrate deploy`.
 
 # Python
 __pycache__/

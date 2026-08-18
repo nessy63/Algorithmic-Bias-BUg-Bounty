@@ -10,11 +10,12 @@ export const audit = {
     });
   },
 
-  userLogin: (userId: string, ip: string) => {
+  userLogin: (userId: string, _ip: string) => {
+    // Client IP addresses are personal data — never write them to logs.
     logger.info('User login', {
       event: 'user.login',
       userId,
-      ip,
+      ip: '[REDACTED]',
       timestamp: new Date().toISOString()
     });
   },
@@ -58,19 +59,21 @@ export const audit = {
     });
   },
 
-  unauthorizedAccess: (ip: string, path: string) => {
+  unauthorizedAccess: (_ip: string, path: string) => {
+    // Client IP addresses are personal data — never write them to logs.
     logger.warn('Unauthorized access attempt', {
       event: 'security.unauthorized',
-      ip,
+      ip: '[REDACTED]',
       path,
       timestamp: new Date().toISOString()
     });
   },
 
-  rateLimitHit: (ip: string, path: string) => {
+  rateLimitHit: (_ip: string, path: string) => {
+    // Client IP addresses are personal data — never write them to logs.
     logger.warn('Rate limit exceeded', {
       event: 'security.rate_limit',
-      ip,
+      ip: '[REDACTED]',
       path,
       timestamp: new Date().toISOString()
     });

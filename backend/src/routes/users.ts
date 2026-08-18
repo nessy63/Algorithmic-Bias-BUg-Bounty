@@ -101,12 +101,20 @@ router.get('/earnings', authenticate, async (req: AuthRequest, res: Response) =>
     select: { totalEarnings: true, reputation: true },
   });
 
+  // Field-level filtering: the client only needs the payment history list —
+  // not the full report bodies (inputExample, reproductionSteps, etc.).
   const paidBugs = await prisma.bugReport.findMany({
     where: {
       researcherId: req.user!.researcherId,
       status: 'PAID',
     },
-    include: { bounty: { select: { amount: true } } },
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      createdAt: true,
+      bounty: { select: { amount: true } },
+    },
     orderBy: { createdAt: 'desc' },
   });
 

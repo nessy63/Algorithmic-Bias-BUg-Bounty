@@ -161,8 +161,9 @@ async function main() {
 
   console.log('Database seeded successfully!');
   console.log('Companies:', company1.name, company2.name);
-  console.log('Researchers:', researcherUser1.email, researcherUser2.email);
-  console.log('Password for all accounts: password123');
+  // Emails and passwords are personal data — never print them to the console.
+  console.log('Researchers: [REDACTED]');
+  console.log('Password for all accounts: [REDACTED]');
 }
 
 main()

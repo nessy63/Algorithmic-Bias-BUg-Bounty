@@ -5,7 +5,7 @@ import { z } from 'zod';
 import prisma from '../config/database';
 import { JWT_SECRET, JWT_EXPIRES_IN, BCRYPT_ROUNDS } from '../config/auth';
 import { validate } from '../middleware/validation';
-import { authLimiter } from '../middleware/rateLimit';
+import { authLimiter, loginLimiter } from '../middleware/rateLimit';
 import { authenticate } from '../middleware/auth';
 import { logger } from '../config/logger';
 import { AuthRequest } from '../types';
@@ -127,6 +127,9 @@ router.post('/register', authLimiter, validate(registerSchema), async (req: Auth
 
     res.cookie(TOKEN_COOKIE, token, tokenCookieOptions());
 
+    // The session token is delivered exclusively via the httpOnly cookie — it
+    // is never returned in the response body, so page JavaScript (including
+    // XSS) cannot read it. The JWT payload contains the user's email.
     res.status(201).json({
       user: {
         id: user.id,
@@ -134,7 +137,6 @@ router.post('/register', authLimiter, validate(registerSchema), async (req: Auth
         name: user.name,
         role: user.role,
       },
-      token,
     });
   } catch (error) {
     // Never log the submitted email — it is personal data.
@@ -146,7 +148,7 @@ router.post('/register', authLimiter, validate(registerSchema), async (req: Auth
   }
 });
 
-router.post('/login', authLimiter, validate(loginSchema), async (req: AuthRequest, res: Response) => {
+router.post('/login', loginLimiter, validate(loginSchema), async (req: AuthRequest, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -178,6 +180,8 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
 
     res.cookie(TOKEN_COOKIE, token, tokenCookieOptions());
 
+    // Session token is delivered via the httpOnly cookie only — never in the
+    // response body (see register above).
     res.json({
       user: {
         id: user.id,
@@ -185,7 +189,6 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
         name: user.name,
         role: user.role,
       },
-      token,
     });
   } catch (error) {
     // Never log the submitted email — it is personal data.

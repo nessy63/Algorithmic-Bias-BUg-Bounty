@@ -1,13 +1,14 @@
 import { Router, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
-import { authenticate } from '../middleware/auth';
+import { authenticate, requireAdmin } from '../middleware/auth';
 import { AuthRequest } from '../types';
 
 const router = Router();
 
 // Log lines can contain sensitive metadata, so the viewer is strictly opt-in
-// and never auto-enabled — not even in development.
+// and never auto-enabled — not even in development. Access is further
+// restricted to admins (ADMIN role or ADMIN_EMAILS env allowlist).
 const logViewerEnabled = process.env.ENABLE_LOG_VIEWER === 'true';
 
 const LOG_FILES = {
@@ -70,8 +71,8 @@ function readLogFile(filePath: string, limit: number): LogEntry[] {
   }
 }
 
-// GET /api/logs?limit=100
-router.get('/', authenticate, (req: AuthRequest, res: Response) => {
+// GET /api/logs?limit=100 — admins only.
+router.get('/', authenticate, requireAdmin, (req: AuthRequest, res: Response) => {
   if (!logViewerEnabled) {
     return res.status(403).json({ error: 'Log viewer is disabled' });
   }

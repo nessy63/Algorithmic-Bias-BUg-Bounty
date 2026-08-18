@@ -56,7 +56,9 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
       include: {
         model: { select: { name: true, company: { select: { name: true } } } },
         bounty: { select: { title: true, amount: true } },
-        researcher: { include: { user: { select: { name: true } } } },
+        // Only the researcher's display name — never their profile URLs,
+        // earnings, or internal ids.
+        researcher: { select: { user: { select: { name: true } } } },
       },
       skip,
       take: parseInt(limit as string),
@@ -79,10 +81,22 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   const bug = await prisma.bugReport.findUnique({
     where: { id: req.params.id },
     include: {
-      model: true,
-      bounty: true,
-      // Never expose the researcher's email to the company (or anyone else).
-      researcher: { include: { user: { select: { name: true } } } },
+      // Field-level filtering: trim models/bounties to public-safe fields and
+      // never expose the researcher's email, profile URLs, or internal ids.
+      model: {
+        select: {
+          id: true,
+          name: true,
+          version: true,
+          category: true,
+          status: true,
+          company: { select: { name: true } },
+        },
+      },
+      bounty: {
+        select: { id: true, title: true, amount: true, severity: true, status: true },
+      },
+      researcher: { select: { user: { select: { name: true } } } },
       // Payment-intent IDs are internal Stripe identifiers — surface only
       // what the client needs.
       escrows: { select: { id: true, amount: true, status: true, createdAt: true } },
@@ -93,9 +107,16 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
     return res.status(404).json({ error: 'Bug report not found' });
   }
 
-  // Check access permissions
-  if (req.user!.role === 'COMPANY' && bug.model.companyId !== req.user!.companyId) {
-    return res.status(403).json({ error: 'Access denied' });
+  // Check access permissions — look the model's companyId up separately so
+  // the internal id never appears in the response payload.
+  if (req.user!.role === 'COMPANY') {
+    const model = await prisma.aIModel.findUnique({
+      where: { id: bug.modelId },
+      select: { companyId: true },
+    });
+    if (!model || model.companyId !== req.user!.companyId) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
   }
 
   if (req.user!.role === 'RESEARCHER' && bug.researcherId !== req.user!.researcherId) {
@@ -132,7 +153,7 @@ router.post('/', authenticate, authorize('RESEARCHER'), validate(createBugSchema
     },
     include: {
       model: { select: { name: true, company: { select: { name: true } } } },
-      bounty: true,
+      bounty: { select: { id: true, title: true, amount: true } },
     },
   });
 
@@ -168,9 +189,20 @@ router.put('/:id', authenticate, authorize('COMPANY'), validate(updateBugSchema)
     where: { id: req.params.id },
     data: req.body,
     include: {
-      model: true,
-      bounty: true,
-      researcher: { include: { user: { select: { name: true } } } },
+      // Field-level filtering: drop internal ids and model apiEndpoint from
+      // the response. maxPayout is included because the escrow amount is
+      // computed from it below.
+      model: {
+        select: {
+          id: true,
+          name: true,
+          company: { select: { name: true } },
+        },
+      },
+      bounty: {
+        select: { id: true, title: true, amount: true, maxPayout: true },
+      },
+      researcher: { select: { user: { select: { name: true } } } },
     },
   });
 

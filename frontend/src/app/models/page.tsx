@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { AIModel } from '@/types';
 import ModelCard from '@/components/features/ModelCard';
 import Input from '@/components/ui/Input';
+import toast from 'react-hot-toast';
 import { Search } from 'lucide-react';
 
 export default function ModelsPage() {
@@ -24,7 +25,7 @@ export default function ModelsPage() {
       const { data } = await api.get<{ data: AIModel[] }>(`/api/models?${params}`);
       setModels(data);
     } catch (error) {
-      console.error('Failed to load models');
+      toast.error('Failed to load models');
     } finally {
       setLoading(false);
     }

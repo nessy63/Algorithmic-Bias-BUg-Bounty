@@ -1,13 +1,24 @@
 version: '3.8'
 
+# Local development / staging deployment.
+# NOTE: POSTGRES_PASSWORD and JWT_SECRET are REQUIRED — compose refuses to
+# start without them (no default credentials). Copy .env.example to .env and
+# fill in real values first.
+#
+# Production hardening notes:
+#   - Do not publish the db port (remove the `ports` mapping below) so the
+#     database is not exposed to the internet.
+#   - Use a managed PostgreSQL with TLS and set sslmode=require in DATABASE_URL.
+
 services:
   db:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your environment (see .env.example)}
       POSTGRES_DB: bugbounty
     ports:
+      # Dev convenience only — remove in production.
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -34,10 +45,14 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/bugbounty
-      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
-      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-sk_test_placeholder}
-      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your environment (see .env.example)}@db:5432/bugbounty
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in your environment (see .env.example)}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_EMAIL_FROM: ${RESEND_EMAIL_FROM:-onboarding@resend.dev}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
       SANDBOX_API_URL: http://sandbox:8000
       REDIS_URL: redis://redis:6379
     depends_on:
@@ -45,8 +60,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes:
-      - ./backend/src:/app/src
 
   sandbox:
     build:
@@ -69,10 +82,13 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
     depends_on:
       - backend
 

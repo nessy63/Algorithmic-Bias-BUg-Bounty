@@ -10,7 +10,11 @@ RUN npm ci
 COPY . .
 
 RUN npx prisma generate
+# Compile TypeScript to dist/ (production build).
+RUN npm run build
+
+ENV NODE_ENV=production
 
 EXPOSE 3001
 
-CMD ["npm", "run", "dev"]
+CMD ["node", "dist/index.js"]

@@ -3,8 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  // Must be set in every environment. For production include TLS:
+  // postgresql://user:pass@host:5432/db?sslmode=require
+  url      = env("DATABASE_URL")
 }
 
 model User {
